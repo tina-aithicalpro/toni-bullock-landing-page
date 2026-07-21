@@ -737,6 +737,15 @@
   .logo-featured img:hover,
   .logo-featured img:focus-visible { filter: grayscale(0); opacity: 1; }
 
+  /* Light-toned logos (e.g. Hulu, Bravo): darken at rest so they read on cream */
+  .logo-featured img.logo-adjust {
+    opacity: 0.9;
+    filter: grayscale(100%) brightness(0.55) contrast(1.15);
+  }
+
+  .logo-featured img.logo-adjust:hover,
+  .logo-featured img.logo-adjust:focus-visible { opacity: 1; filter: none; }
+
   .logo-marquee {
     position: relative;
     width: 100%;
@@ -936,8 +945,8 @@
       <li><img src="logos/netflix.webp" alt="Netflix" height="40" loading="lazy" decoding="async"></li>
       <li><img src="logos/fox.svg" alt="FOX" height="40" loading="lazy" decoding="async"></li>
       <li><img src="logos/cbs.svg" alt="CBS" height="40" loading="lazy" decoding="async"></li>
-      <li><img src="logos/bravo.webp" alt="Bravo" height="40" loading="lazy" decoding="async"></li>
-      <li><img src="logos/hulu.webp" alt="Hulu" height="40" loading="lazy" decoding="async"></li>
+      <li><img src="logos/bravo.webp" alt="Bravo" class="logo-adjust" height="40" loading="lazy" decoding="async"></li>
+      <li><img src="logos/hulu.webp" alt="Hulu" class="logo-adjust" height="40" loading="lazy" decoding="async"></li>
       <li><img src="logos/meta.png" alt="Meta" height="40" loading="lazy" decoding="async"></li>
     </ul>
   </div>
