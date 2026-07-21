@@ -702,6 +702,99 @@
   .faq-item:last-child { border-bottom: 1px solid var(--hairline); }
   .faq-item h3 { font-family: 'Forum', serif; font-weight: 400; font-size: 1.2rem; margin-bottom: 0.4rem; }
   .faq-item p { font-size: 0.95rem; margin: 0; max-width: 42rem; }
+
+  /* PRODUCED FOR — CLIENT LOGOS */
+  .logos-section {
+    padding: 3.5rem 0 3.75rem;
+    background: var(--cream);
+    border-bottom: 1px solid var(--hairline);
+    overflow: hidden;
+  }
+
+  .logo-featured {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem 3rem;
+    max-width: 58rem;
+    margin: 1.9rem auto 0;
+  }
+
+  .logo-featured li { flex: 0 0 auto; line-height: 0; }
+
+  .logo-featured img {
+    height: 40px;
+    width: auto;
+    max-width: 150px;
+    object-fit: contain;
+    filter: grayscale(100%);
+    opacity: 0.62;
+    transition: filter 0.3s ease, opacity 0.3s ease;
+  }
+
+  .logo-featured img:hover,
+  .logo-featured img:focus-visible { filter: grayscale(0); opacity: 1; }
+
+  .logo-marquee {
+    position: relative;
+    width: 100%;
+    margin-top: 3rem;
+    overflow: hidden;
+    -webkit-mask-image: linear-gradient(to right, transparent, #000 7%, #000 93%, transparent);
+            mask-image: linear-gradient(to right, transparent, #000 7%, #000 93%, transparent);
+  }
+
+  .logo-track {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 3.5rem;
+    width: max-content;
+    animation: logo-scroll 64s linear infinite;
+  }
+
+  .logo-marquee:hover .logo-track,
+  .logo-marquee:focus-within .logo-track { animation-play-state: paused; }
+
+  .logo-track li { flex: 0 0 auto; line-height: 0; }
+
+  .logo-track img {
+    height: 34px;
+    width: auto;
+    max-width: 128px;
+    object-fit: contain;
+    filter: grayscale(100%);
+    opacity: 0.55;
+    transition: filter 0.3s ease, opacity 0.3s ease;
+  }
+
+  .logo-track img:hover,
+  .logo-track img:focus-visible { filter: grayscale(0); opacity: 1; }
+
+  @keyframes logo-scroll {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+  }
+
+  @media (max-width: 560px) {
+    .logo-featured { gap: 1.6rem 2.2rem; }
+    .logo-featured img { height: 32px; max-width: 118px; }
+    .logo-track img { height: 28px; }
+    .logo-track { gap: 2.75rem; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .logo-track {
+      animation: none;
+      width: 100%;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 2rem 2.5rem;
+    }
+    .logo-track .logo-dup { display: none; }
+  }
 </style>
 <script type="application/ld+json">
 {
@@ -835,6 +928,86 @@
     </div>
   </div>
 </div>
+
+<section class="logos-section" id="produced-for" aria-label="Networks and companies Toni Bullock has produced for">
+  <div class="wrap">
+    <h2 class="field-label centered">Produced For</h2>
+    <ul class="logo-featured">
+      <li><img src="logos/netflix.webp" alt="Netflix" height="40" loading="lazy" decoding="async"></li>
+      <li><img src="logos/fox.svg" alt="FOX" height="40" loading="lazy" decoding="async"></li>
+      <li><img src="logos/cbs.svg" alt="CBS" height="40" loading="lazy" decoding="async"></li>
+      <li><img src="logos/bravo.webp" alt="Bravo" height="40" loading="lazy" decoding="async"></li>
+      <li><img src="logos/hulu.webp" alt="Hulu" height="40" loading="lazy" decoding="async"></li>
+      <li><img src="logos/meta.png" alt="Meta" height="40" loading="lazy" decoding="async"></li>
+    </ul>
+  </div>
+
+  <div class="logo-marquee" aria-label="Additional networks and production companies">
+    <ul class="logo-track">
+        <li><img src="logos/ae.svg" alt="A&amp;E" height="34" loading="lazy" decoding="async"></li>
+        <li><img src="logos/awesomenesstv.png" alt="AwesomenessTV" height="34" loading="lazy" decoding="async"></li>
+        <li><img src="logos/bet.svg" alt="BET" height="34" loading="lazy" decoding="async"></li>
+        <li><img src="logos/bstv.png" alt="BSTV Entertainment" height="34" loading="lazy" decoding="async"></li>
+        <li><img src="logos/buzzfeed.png" alt="BuzzFeed" height="34" loading="lazy" decoding="async"></li>
+        <li><img src="logos/centric.svg" alt="Centric" height="34" loading="lazy" decoding="async"></li>
+        <li><img src="logos/done-dusted.png" alt="Done + Dusted" height="34" loading="lazy" decoding="async"></li>
+        <li><img src="logos/e-entertainment.svg" alt="E!" height="34" loading="lazy" decoding="async"></li>
+        <li><img src="logos/eater.svg" alt="Eater" height="34" loading="lazy" decoding="async"></li>
+        <li><img src="logos/food-network.webp" alt="Food Network" height="34" loading="lazy" decoding="async"></li>
+        <li><img src="logos/hamilton-college.webp" alt="Hamilton College" height="34" loading="lazy" decoding="async"></li>
+        <li><img src="logos/hbo-max.svg" alt="HBO Max" height="34" loading="lazy" decoding="async"></li>
+        <li><img src="logos/lifetime.webp" alt="Lifetime" height="34" loading="lazy" decoding="async"></li>
+        <li><img src="logos/new-york-magazine.svg" alt="New York Magazine" height="34" loading="lazy" decoding="async"></li>
+        <li><img src="logos/newhouse-school.svg" alt="Newhouse School" height="34" loading="lazy" decoding="async"></li>
+        <li><img src="logos/nhnz.svg" alt="NHNZ Worldwide" height="34" loading="lazy" decoding="async"></li>
+        <li><img src="logos/nbcuniversal.svg" alt="NBCUniversal" height="34" loading="lazy" decoding="async"></li>
+        <li><img src="logos/nowthis.png" alt="NowThis" height="34" loading="lazy" decoding="async"></li>
+        <li><img src="logos/popsugar.png" alt="PopSugar" height="34" loading="lazy" decoding="async"></li>
+        <li><img src="logos/rock-shrimp.jpg" alt="Rock Shrimp Productions" height="34" loading="lazy" decoding="async"></li>
+        <li><img src="logos/rusk-media.png" alt="Rusk Media" height="34" loading="lazy" decoding="async"></li>
+        <li><img src="logos/sharp-entertainment.webp" alt="Sharp Entertainment" height="34" loading="lazy" decoding="async"></li>
+        <li><img src="logos/shed-media.png" alt="Shed Media" height="34" loading="lazy" decoding="async"></li>
+        <li><img src="logos/springhill.webp" alt="SpringHill" height="34" loading="lazy" decoding="async"></li>
+        <li><img src="logos/the-dodo.svg" alt="The Dodo" height="34" loading="lazy" decoding="async"></li>
+        <li><img src="logos/tlc.webp" alt="TLC" height="34" loading="lazy" decoding="async"></li>
+        <li><img src="logos/tv-one.png" alt="TV One" height="34" loading="lazy" decoding="async"></li>
+        <li><img src="logos/vox-media.webp" alt="Vox Media" height="34" loading="lazy" decoding="async"></li>
+        <li><img src="logos/we-tv.svg" alt="WE tv" height="34" loading="lazy" decoding="async"></li>
+        <li><img src="logos/wrigley-media.jpg" alt="Wrigley Media Group" height="34" loading="lazy" decoding="async"></li>
+        <!-- duplicate set for seamless loop -->
+        <li class="logo-dup" aria-hidden="true"><img src="logos/ae.svg" alt="" height="34" loading="lazy" decoding="async"></li>
+        <li class="logo-dup" aria-hidden="true"><img src="logos/awesomenesstv.png" alt="" height="34" loading="lazy" decoding="async"></li>
+        <li class="logo-dup" aria-hidden="true"><img src="logos/bet.svg" alt="" height="34" loading="lazy" decoding="async"></li>
+        <li class="logo-dup" aria-hidden="true"><img src="logos/bstv.png" alt="" height="34" loading="lazy" decoding="async"></li>
+        <li class="logo-dup" aria-hidden="true"><img src="logos/buzzfeed.png" alt="" height="34" loading="lazy" decoding="async"></li>
+        <li class="logo-dup" aria-hidden="true"><img src="logos/centric.svg" alt="" height="34" loading="lazy" decoding="async"></li>
+        <li class="logo-dup" aria-hidden="true"><img src="logos/done-dusted.png" alt="" height="34" loading="lazy" decoding="async"></li>
+        <li class="logo-dup" aria-hidden="true"><img src="logos/e-entertainment.svg" alt="" height="34" loading="lazy" decoding="async"></li>
+        <li class="logo-dup" aria-hidden="true"><img src="logos/eater.svg" alt="" height="34" loading="lazy" decoding="async"></li>
+        <li class="logo-dup" aria-hidden="true"><img src="logos/food-network.webp" alt="" height="34" loading="lazy" decoding="async"></li>
+        <li class="logo-dup" aria-hidden="true"><img src="logos/hamilton-college.webp" alt="" height="34" loading="lazy" decoding="async"></li>
+        <li class="logo-dup" aria-hidden="true"><img src="logos/hbo-max.svg" alt="" height="34" loading="lazy" decoding="async"></li>
+        <li class="logo-dup" aria-hidden="true"><img src="logos/lifetime.webp" alt="" height="34" loading="lazy" decoding="async"></li>
+        <li class="logo-dup" aria-hidden="true"><img src="logos/new-york-magazine.svg" alt="" height="34" loading="lazy" decoding="async"></li>
+        <li class="logo-dup" aria-hidden="true"><img src="logos/newhouse-school.svg" alt="" height="34" loading="lazy" decoding="async"></li>
+        <li class="logo-dup" aria-hidden="true"><img src="logos/nhnz.svg" alt="" height="34" loading="lazy" decoding="async"></li>
+        <li class="logo-dup" aria-hidden="true"><img src="logos/nbcuniversal.svg" alt="" height="34" loading="lazy" decoding="async"></li>
+        <li class="logo-dup" aria-hidden="true"><img src="logos/nowthis.png" alt="" height="34" loading="lazy" decoding="async"></li>
+        <li class="logo-dup" aria-hidden="true"><img src="logos/popsugar.png" alt="" height="34" loading="lazy" decoding="async"></li>
+        <li class="logo-dup" aria-hidden="true"><img src="logos/rock-shrimp.jpg" alt="" height="34" loading="lazy" decoding="async"></li>
+        <li class="logo-dup" aria-hidden="true"><img src="logos/rusk-media.png" alt="" height="34" loading="lazy" decoding="async"></li>
+        <li class="logo-dup" aria-hidden="true"><img src="logos/sharp-entertainment.webp" alt="" height="34" loading="lazy" decoding="async"></li>
+        <li class="logo-dup" aria-hidden="true"><img src="logos/shed-media.png" alt="" height="34" loading="lazy" decoding="async"></li>
+        <li class="logo-dup" aria-hidden="true"><img src="logos/springhill.webp" alt="" height="34" loading="lazy" decoding="async"></li>
+        <li class="logo-dup" aria-hidden="true"><img src="logos/the-dodo.svg" alt="" height="34" loading="lazy" decoding="async"></li>
+        <li class="logo-dup" aria-hidden="true"><img src="logos/tlc.webp" alt="" height="34" loading="lazy" decoding="async"></li>
+        <li class="logo-dup" aria-hidden="true"><img src="logos/tv-one.png" alt="" height="34" loading="lazy" decoding="async"></li>
+        <li class="logo-dup" aria-hidden="true"><img src="logos/vox-media.webp" alt="" height="34" loading="lazy" decoding="async"></li>
+        <li class="logo-dup" aria-hidden="true"><img src="logos/we-tv.svg" alt="" height="34" loading="lazy" decoding="async"></li>
+        <li class="logo-dup" aria-hidden="true"><img src="logos/wrigley-media.jpg" alt="" height="34" loading="lazy" decoding="async"></li>
+    </ul>
+  </div>
+</section>
 
 <section class="pad" id="about">
   <div class="wrap">
