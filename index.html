@@ -804,6 +804,43 @@
     }
     .logo-track .logo-dup { display: none; }
   }
+
+  /* PORTRAIT IMAGERY (About, Where to start, Media) */
+  .section-figure { margin: 0; }
+  .section-figure img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 2px;
+    border: 1px solid var(--hairline);
+  }
+
+  .about-layout { display: grid; grid-template-columns: 1fr; gap: 2.5rem; }
+  @media (min-width: 820px) {
+    .about-layout { grid-template-columns: 1.45fr 1fr; align-items: center; gap: 3.5rem; }
+  }
+
+  .how-layout { display: grid; grid-template-columns: 1fr; gap: 2.5rem; }
+  @media (min-width: 820px) {
+    .how-layout { grid-template-columns: 0.85fr 1.15fr; align-items: center; gap: 3.5rem; }
+    .how-layout .paths { grid-template-columns: 1fr; gap: 1.5rem; margin-top: 2rem; }
+  }
+
+  .media-layout { display: grid; grid-template-columns: 1fr; gap: 2.5rem; }
+  @media (min-width: 900px) {
+    .media-layout { grid-template-columns: 1.5fr 0.85fr; gap: 3.5rem; align-items: start; }
+    .media-figure { position: sticky; top: 5.5rem; }
+  }
+
+  .footer-avatar {
+    width: 88px;
+    height: 88px;
+    border-radius: 50%;
+    object-fit: cover;
+    display: block;
+    margin: 0 auto 1.1rem;
+    border: 1px solid var(--hairline);
+  }
 </style>
 <script type="application/ld+json">
 {
@@ -1020,14 +1057,21 @@
 
 <section class="pad" id="about">
   <div class="wrap">
-    <h2 class="field-label">About</h2>
-    <p>Toni Bullock is a National Emmy Award-winning television producer who has spent her career shaping premium unscripted and syndicated television. Her producing credits include Red Table Talk, Black Women Own the Conversation, Peace of Mind with Taraji, The Amazing Race, and Rhythm and Flow, and she most recently served as Senior Producer on the nationally syndicated talk show Sherri from 2024 to 2025.</p>
-    <p>In 2017, she founded Callsheets 2 Cocktails (C2C), a professional community built to connect, educate, and empower women in media through panels and networking events.</p>
-    <p>She is also the founder of Effortlessly Coordinated, a Brooklyn, NY&ndash;based event coordination team specializing in weddings, proposals, and corporate events&mdash;bringing production-level standards from the screen to the celebrations and gatherings she plans.</p>
-    <blockquote class="inline-quote">
-      <p>&ldquo;Never be scared to take a risk.&rdquo;</p>
-      <cite>Toni Bullock</cite>
-    </blockquote>
+    <div class="about-layout">
+      <div class="about-copy">
+        <h2 class="field-label">About</h2>
+        <p>Toni Bullock is a National Emmy Award-winning television producer who has spent her career shaping premium unscripted and syndicated television. Her producing credits include Red Table Talk, Black Women Own the Conversation, Peace of Mind with Taraji, The Amazing Race, and Rhythm and Flow, and she most recently served as Senior Producer on the nationally syndicated talk show Sherri from 2024 to 2025.</p>
+        <p>In 2017, she founded Callsheets 2 Cocktails (C2C), a professional community built to connect, educate, and empower women in media through panels and networking events.</p>
+        <p>She is also the founder of Effortlessly Coordinated, a Brooklyn, NY&ndash;based event coordination team specializing in weddings, proposals, and corporate events&mdash;bringing production-level standards from the screen to the celebrations and gatherings she plans.</p>
+        <blockquote class="inline-quote">
+          <p>&ldquo;Never be scared to take a risk.&rdquo;</p>
+          <cite>Toni Bullock</cite>
+        </blockquote>
+      </div>
+      <figure class="section-figure">
+        <img src="images/toni-bullock-about.webp" alt="Toni Bullock standing with her arms crossed in a black blazer against a warm amber studio backdrop" width="780" height="975" loading="lazy" decoding="async">
+      </figure>
+    </div>
   </div>
 </section>
 
@@ -1081,6 +1125,8 @@
 
 <section class="pad" id="media">
   <div class="wrap">
+    <div class="media-layout">
+    <div class="media-copy">
     <h2 class="field-label">Media</h2>
     <ul class="media-list">
       <li>
@@ -1209,6 +1255,11 @@
         </a>
       </li>
     </ul>
+    </div>
+    <figure class="section-figure media-figure">
+      <img src="images/toni-bullock-press.webp" alt="Toni Bullock in a white shirt with a black leather jacket over one shoulder, the Manhattan Bridge behind her in DUMBO, Brooklyn" width="780" height="1169" loading="lazy" decoding="async">
+    </figure>
+    </div>
   </div>
 </section>
 
@@ -1243,23 +1294,30 @@
 
 <section class="pad" id="how">
   <div class="wrap">
-    <span class="field-label">Three ways in</span>
-    <h2 style="font-size: clamp(1.8rem, 4vw, 2.6rem);">Where to start.</h2>
-    <div class="paths">
-      <div class="path">
-        <div class="num">01</div>
-        <h3>See the work</h3>
-        <p>National Emmy-winning credits across unscripted television, from Red Table Talk to Sherri.</p>
-      </div>
-      <div class="path">
-        <div class="num">02</div>
-        <h3>Join the room</h3>
-        <p>Callsheets 2 Cocktails, founded 2017: a professional community for women in media.</p>
-      </div>
-      <div class="path">
-        <div class="num">03</div>
-        <h3>Book the team</h3>
-        <p>Effortlessly Coordinated: weddings, proposals, and corporate events in Brooklyn.</p>
+    <div class="how-layout">
+      <figure class="section-figure">
+        <img src="images/toni-bullock-services.webp" alt="Toni Bullock seated in a black tweed blazer with gold buttons against a light grey studio backdrop" width="700" height="875" loading="lazy" decoding="async">
+      </figure>
+      <div class="how-copy">
+        <span class="field-label">Three ways in</span>
+        <h2 style="font-size: clamp(1.8rem, 4vw, 2.6rem);">Where to start.</h2>
+        <div class="paths">
+          <div class="path">
+            <div class="num">01</div>
+            <h3>See the work</h3>
+            <p>National Emmy-winning credits across unscripted television, from Red Table Talk to Sherri.</p>
+          </div>
+          <div class="path">
+            <div class="num">02</div>
+            <h3>Join the room</h3>
+            <p>Callsheets 2 Cocktails, founded 2017: a professional community for women in media.</p>
+          </div>
+          <div class="path">
+            <div class="num">03</div>
+            <h3>Book the team</h3>
+            <p>Effortlessly Coordinated: weddings, proposals, and corporate events in Brooklyn.</p>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -1308,6 +1366,7 @@
 </section>
 
 <footer>
+  <img class="footer-avatar" src="images/toni-bullock-footer.webp" alt="Portrait of Toni Bullock in a white blazer" width="88" height="88" loading="lazy" decoding="async">
   <div class="footer-brand">Toni Bullock</div>
   <p>Emmy Award-Winning Producer</p>
   <nav class="footer-social" aria-label="Social media">
