@@ -171,64 +171,158 @@
   .hero {
     position: relative;
     color: var(--ink);
-    padding: 4rem 0;
+    padding: 3.5rem 0 4rem;
     border-bottom: 1px solid var(--hairline);
     background: var(--cream);
     overflow: hidden;
   }
 
-  .hero::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-image:
-      linear-gradient(
-        to right,
-        var(--cream) 0%,
-        var(--cream) 32%,
-        rgba(250, 250, 248, 0.82) 46%,
-        rgba(250, 250, 248, 0.25) 62%,
-        rgba(250, 250, 248, 0) 75%
-      ),
-      url('toni-bullock-hero.jpg');
-    background-size: 100% 100%, auto 135%;
-    background-position: 0 0, left center;
-  }
-
-  @media (max-width: 800px) {
-    .hero::before {
-      height: 420px;
-      background-image:
-        linear-gradient(
-          to bottom,
-          rgba(250, 250, 248, 0) 0%,
-          rgba(250, 250, 248, 0) 46%,
-          rgba(250, 250, 248, 0.7) 74%,
-          #FAFAF8 96%
-        ),
-        url('toni-bullock-hero.jpg');
-      background-size: 100% 100%, cover;
-      background-position: 0 0, 82% center;
-    }
-    .hero { padding: 230px 0 3rem; }
-  }
-
   .hero .wrap { position: relative; z-index: 1; }
 
-  .hero-text { max-width: 32rem; }
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 3rem;
+    align-items: center;
+  }
+  @media (min-width: 860px) {
+    .hero-grid { grid-template-columns: 1.05fr 0.95fr; gap: 3.5rem; }
+  }
 
-  .hero-text h1 { font-size: clamp(2.4rem, 6vw, 4rem); line-height: 1.02; margin-bottom: 1rem; color: var(--ink); }
+  /* Hero — left column */
+  .hero-left { max-width: 34rem; }
 
-  .hero-text .title-line {
+  .hero-eyebrow {
     font-family: 'Inter', sans-serif;
-    font-weight: 500;
-    font-size: clamp(1rem, 2.2vw, 1.2rem);
+    font-weight: 600;
+    font-size: 0.72rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--gold);
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    margin-bottom: 1.15rem;
+  }
+  .hero-eyebrow::before {
+    content: "";
+    display: inline-block;
+    width: 1.6rem;
+    height: 1px;
+    background: var(--gold);
+  }
+
+  .hero-headline {
+    font-family: 'Forum', serif;
+    font-weight: 400;
+    font-size: clamp(2.5rem, 5.5vw, 4rem);
+    line-height: 1.05;
+    letter-spacing: 0.01em;
     color: var(--ink);
-    margin-bottom: 1.75rem;
+    margin-bottom: 1.25rem;
+  }
+  .hero-headline em { font-style: italic; color: var(--gold); }
+
+  .hero-sub {
+    font-family: 'Inter', sans-serif;
+    font-size: 1.05rem;
+    line-height: 1.65;
+    color: rgba(27, 27, 25, 0.68);
+    margin-bottom: 2rem;
     max-width: 30rem;
+  }
+
+  .hero-actions { display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap; }
+
+  .hero-cta { display: inline-flex; align-items: center; gap: 0.55rem; }
+  .hero-cta svg { width: 1rem; height: 1rem; flex: 0 0 auto; }
+
+  .hero-proof {
+    margin-top: 2.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1.4rem;
+    flex-wrap: wrap;
+  }
+  .proof-stat { display: flex; flex-direction: column; }
+  .proof-num {
+    font-family: 'Forum', serif;
+    font-weight: 400;
+    font-size: 1.45rem;
+    line-height: 1;
+    color: var(--ink);
+  }
+  .proof-label {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: rgba(27, 27, 25, 0.55);
+    margin-top: 0.35rem;
+  }
+  .proof-divider { width: 1px; height: 2.4rem; background: var(--hairline); }
+
+  /* Hero — right column */
+  .hero-right { position: relative; max-width: 25rem; margin: 0 auto; width: 100%; }
+
+  .hero-photo-wrap {
+    position: relative;
+    border-radius: 190px 190px 14px 14px;
+    overflow: hidden;
+    background: rgba(27, 27, 25, 0.06);
+    aspect-ratio: 4 / 5;
+    box-shadow: 0 24px 55px -28px rgba(27, 27, 25, 0.55);
+  }
+  .hero-photo-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 60% 20%;
+    display: block;
+  }
+
+  .hero-accent { position: absolute; top: 1.4rem; left: 1rem; z-index: 2; pointer-events: none; display: flex; gap: 7px; }
+  .hero-accent span {
+    display: block;
+    width: 1.5rem;
+    height: 2px;
+    background: var(--gold);
+    opacity: 0.75;
+    transform: rotate(-45deg);
+  }
+
+  .hero-badge {
+    position: absolute;
+    z-index: 3;
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    font-size: 0.72rem;
+    letter-spacing: 0.02em;
+    padding: 0.5rem 0.9rem;
+    border-radius: 999px;
+    background: var(--cream);
+    color: var(--ink);
+    box-shadow: 0 10px 26px -12px rgba(27, 27, 25, 0.5);
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+  }
+  .hero-badge .dot { width: 0.5rem; height: 0.5rem; border-radius: 50%; background: var(--gold); flex: 0 0 auto; }
+  .badge-emmy    { top: 14%; left: -1.4rem; }
+  .badge-credit  { top: 46%; right: -1.4rem; }
+  .badge-founder { bottom: 5%; left: 0.4rem; background: var(--ink); color: var(--gold-bright); }
+  .badge-founder .dot { background: var(--gold-bright); }
+
+  @media (max-width: 859px) {
+    .hero-left { max-width: none; }
+    .badge-emmy { left: -0.6rem; }
+    .badge-credit { right: -0.6rem; }
+  }
+
+  @media (max-width: 420px) {
+    .hero-proof { gap: 1rem; }
+    .proof-num { font-size: 1.25rem; }
   }
 
 
@@ -912,7 +1006,7 @@
       <li><a href="#timeline">Career</a></li>
       <li><a href="#media">Media</a></li>
       <li><a href="#ventures">Ventures</a></li>
-      <li><a href="#hero-form" class="btn-solid">Contact</a></li>
+      <li><a href="#contact" class="btn-solid">Contact</a></li>
     </ul>
     <button class="menu-toggle" id="menu-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="nav-links">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
@@ -922,55 +1016,49 @@
 
 <div class="hero" id="top">
   <div class="wrap">
-    <div class="hero-text">
-      <h1>Toni Bullock</h1>
-      <p class="title-line">Emmy Award-Winning Producer &nbsp;|&nbsp; Founder, Effortlessly Coordinated</p>
-      <a href="#about" class="btn-ghost">Learn more &darr;</a>
-
-      <form class="hero-form" id="hero-form" novalidate>
-        <h2>Let&rsquo;s create something unforgettable</h2>
-        <p class="form-sub">Whether you&rsquo;re booking production work, joining the C2C community, or planning a celebration with Effortlessly Coordinated, tell me a bit about what you need and I&rsquo;ll follow up personally.</p>
-
-        <div class="form-two-col">
-          <div class="form-row" id="row-name">
-            <label for="f-name">Name</label>
-            <input type="text" id="f-name" name="name" autocomplete="name" required>
-            <span class="field-error">Please enter your name.</span>
+    <div class="hero-grid">
+      <div class="hero-left">
+        <!-- Eyebrow: real role (confirm wording) -->
+        <p class="hero-eyebrow">Emmy-Winning TV Producer</p>
+        <!-- Headline built from existing site copy; second line italic -->
+        <h1 class="hero-headline">Toni Bullock,<br><em>Producer &amp; Founder</em></h1>
+        <!-- Subtext trimmed from the site's existing hero copy -->
+        <p class="hero-sub">Whether you&rsquo;re booking production work, joining the Callsheets 2 Cocktails community, or planning a celebration with Effortlessly Coordinated&mdash;let&rsquo;s create something unforgettable.</p>
+        <div class="hero-actions">
+          <a href="#contact" class="btn-solid hero-cta">Start the Conversation
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg>
+          </a>
+          <a href="#about" class="btn-ghost">Learn more &darr;</a>
+        </div>
+        <!-- Trust/proof line: real credentials already on the site (no client avatars exist) -->
+        <div class="hero-proof">
+          <div class="proof-stat">
+            <span class="proof-num">National Emmy</span>
+            <span class="proof-label">Award Winner</span>
           </div>
-
-          <div class="form-row" id="row-email">
-            <label for="f-email">Email</label>
-            <input type="email" id="f-email" name="email" autocomplete="email" required>
-            <span class="field-error">Please enter a valid email address.</span>
+          <div class="proof-divider"></div>
+          <div class="proof-stat">
+            <span class="proof-num">55</span>
+            <span class="proof-label">Episodes of Sherri</span>
+          </div>
+          <div class="proof-divider"></div>
+          <div class="proof-stat">
+            <span class="proof-num">2017</span>
+            <span class="proof-label">Founded C2C</span>
           </div>
         </div>
+      </div>
 
-        <div class="form-row" id="row-reason">
-          <label for="f-reason">I&rsquo;m reaching out about</label>
-          <select id="f-reason" name="reason" required>
-            <option value="" disabled selected>Choose one</option>
-            <option value="Production / booking">Production &amp; booking</option>
-            <option value="Callsheets 2 Cocktails">Callsheets 2 Cocktails</option>
-            <option value="Effortlessly Coordinated">Effortlessly Coordinated (event)</option>
-            <option value="Something else">Something else</option>
-          </select>
-          <span class="field-error">Please choose one.</span>
+      <div class="hero-right">
+        <div class="hero-photo-wrap">
+          <img src="toni-bullock-hero.jpg" alt="Toni Bullock, Emmy-winning producer, in a red jumpsuit on a Brooklyn rooftop with the Manhattan Bridge behind her">
         </div>
-
-        <div class="form-row" id="row-message">
-          <label for="f-message">Tell me about it</label>
-          <textarea id="f-message" name="message" required placeholder="Share a few details, dates, or the story behind what you're planning..."></textarea>
-          <span class="field-error">Please add a short message.</span>
-        </div>
-
-        <button type="submit" class="form-submit">Send My Inquiry</button>
-        <p class="form-note">Every detail helps me understand exactly how to bring your vision to life.</p>
-
-        <div class="form-confirm" id="form-confirm" role="status" aria-live="polite">
-          Thank you! Opening your email app to send this now. If nothing opens,
-          <a href="mailto:automation@aithical.pro" style="color: var(--ink); font-weight: 600;">click here to reach out directly</a>.
-        </div>
-      </form>
+        <span class="hero-accent" aria-hidden="true"><span></span><span></span><span></span></span>
+        <!-- Floating badges: real credits / venture -->
+        <span class="hero-badge badge-emmy"><span class="dot"></span>Red Table Talk</span>
+        <span class="hero-badge badge-credit"><span class="dot"></span>The Amazing Race</span>
+        <span class="hero-badge badge-founder">Founder, C2C</span>
+      </div>
     </div>
   </div>
 </div>
@@ -1349,7 +1437,7 @@
     <div class="contact-card">
       <h3>Toni Bullock</h3>
       <p>From production collaborations to the biggest day of your life, I&rsquo;d love to hear your story and help bring it to life.</p>
-      <a href="#hero-form" class="btn-solid" style="text-align:center; display:block;">Start the Conversation &uarr;</a>
+      <a href="#contact" class="btn-solid" style="text-align:center; display:block;">Start the Conversation &uarr;</a>
     </div>
   </div>
 </section>
@@ -1394,53 +1482,8 @@
     });
   });
 
-  // Hero funnel form
-  // TODO(Jay): this currently routes to automation@aithical.pro via mailto since
-  // no confirmed public email/phone exists yet for Toni herself (per fact
-  // verification). Once she confirms a preferred contact address, or once a
-  // proper form backend (Formspree/Netlify Forms/etc.) is wired, replace the
-  // mailto behavior below. mailto only works if the visitor has a mail
-  // client configured, which is a real limitation for production use.
-  const heroForm = document.getElementById('hero-form');
-  const formConfirm = document.getElementById('form-confirm');
-
-  heroForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-
-    const fields = [
-      { id: 'f-name', row: 'row-name' },
-      { id: 'f-email', row: 'row-email' },
-      { id: 'f-reason', row: 'row-reason' },
-      { id: 'f-message', row: 'row-message' },
-    ];
-
-    let firstInvalid = null;
-    fields.forEach(({ id, row }) => {
-      const el = document.getElementById(id);
-      const rowEl = document.getElementById(row);
-      const valid = el.checkValidity();
-      rowEl.classList.toggle('invalid', !valid);
-      if (!valid && !firstInvalid) firstInvalid = el;
-    });
-
-    if (firstInvalid) {
-      firstInvalid.focus();
-      return;
-    }
-
-    const name = document.getElementById('f-name').value.trim();
-    const email = document.getElementById('f-email').value.trim();
-    const reason = document.getElementById('f-reason').value;
-    const message = document.getElementById('f-message').value.trim();
-
-    const subject = encodeURIComponent(`New inquiry from tonibullock.com: ${reason}`);
-    const body = encodeURIComponent(
-      `Name: ${name}\nEmail: ${email}\nReason: ${reason}\n\nMessage:\n${message}`
-    );
-
-    formConfirm.classList.add('show');
-    window.location.href = `mailto:automation@aithical.pro?subject=${subject}&body=${body}`;
-  });
+  // (Hero lead-capture form removed in the hero redesign; the hero CTA now
+  // links to the #contact section. No form JS needed here anymore.)
 </script>
 
 </body>
