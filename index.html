@@ -744,12 +744,27 @@
     border: 1px solid var(--hairline);
     padding: 2rem;
     max-width: 30rem;
-    margin-top: 2rem;
-    margin-left: auto; /* right-align the card within the section */
   }
 
   .contact-card h3 { font-family: 'Forum', serif; font-weight: 400; font-size: 1.4rem; margin-bottom: 0.5rem; }
   .contact-card > p { font-size: 0.95rem; margin-bottom: 1.25rem; max-width: none; }
+
+  /* Left-column intro + secondary "Follow along" contact path (reuses footer links) */
+  .contact-intro-copy { margin-top: 1rem; max-width: 32rem; }
+  .contact-connect { margin-top: 2.25rem; }
+  .contact-social { display: flex; flex-direction: column; gap: 0.7rem; margin-top: 0.4rem; }
+  .contact-social a {
+    width: fit-content;
+    color: var(--ink);
+    text-decoration: none;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 500;
+    letter-spacing: 0.03em;
+    border-bottom: 1px solid var(--hairline);
+    padding-bottom: 2px;
+  }
+  .contact-social a:hover { color: var(--gold); border-color: var(--gold); }
   .contact-card .btn-solid { margin-bottom: 0.75rem; width: 100%; text-align: center; }
 
   /* FOOTER */
@@ -925,6 +940,12 @@
   @media (min-width: 900px) {
     .media-layout { grid-template-columns: 1.5fr 0.85fr; gap: 3.5rem; align-items: start; }
     .media-figure { position: sticky; top: 5.5rem; }
+  }
+
+  .contact-layout { display: grid; grid-template-columns: 1fr; gap: 2.5rem; }
+  @media (min-width: 820px) {
+    .contact-layout { grid-template-columns: 1fr 1fr; gap: 3.5rem; align-items: start; }
+    .contact-layout .contact-card { margin-left: auto; } /* right-align card in its column */
   }
 
   .footer-avatar {
@@ -1433,13 +1454,28 @@
 
 <section class="pad" id="contact">
   <div class="wrap">
-    <span class="field-label">Get in touch</span>
-    <h2 style="font-size: clamp(1.8rem, 4vw, 2.4rem);">Every project starts with a conversation.</h2>
-    <div class="contact-card">
-      <h3>Toni Bullock</h3>
-      <p>From production collaborations to the biggest day of your life, I&rsquo;d love to hear your story and help bring it to life.</p>
+    <div class="contact-layout">
+      <div class="contact-intro">
+        <span class="field-label">Get in touch</span>
+        <h2 style="font-size: clamp(1.8rem, 4vw, 2.4rem);">Every project starts with a conversation.</h2>
+        <p class="contact-intro-copy">From production collaborations to the biggest day of your life, I&rsquo;d love to hear your story and help bring it to life.</p>
 
-      <form id="contact-form" class="contact-form" novalidate>
+        <div class="contact-connect">
+          <span class="field-label">Follow along</span>
+          <div class="contact-social">
+            <a href="https://www.instagram.com/tonilbullock/" target="_blank" rel="noopener">Instagram (Personal)</a>
+            <a href="https://www.instagram.com/effortlesslycoordinated/" target="_blank" rel="noopener">Instagram (Effortlessly Coordinated)</a>
+            <a href="https://www.instagram.com/callsheets2cocktails/" target="_blank" rel="noopener">Instagram (Callsheets 2 Cocktails)</a>
+            <a href="https://www.facebook.com/profile.php?id=61577015713154" target="_blank" rel="noopener">Facebook</a>
+            <a href="https://www.linkedin.com/in/tonibullock/" target="_blank" rel="noopener">LinkedIn</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="contact-card">
+        <h3>Toni Bullock</h3>
+
+        <form id="contact-form" class="contact-form" novalidate>
         <div class="form-two-col">
           <div class="form-row" id="row-name">
             <label for="f-name">Name</label>
@@ -1479,7 +1515,8 @@
           Thank you! Opening your email app to send this now. If nothing opens,
           <a href="mailto:toni.l.bullock@gmail.com" style="color: var(--ink); font-weight: 600;">click here to reach out directly</a>.
         </div>
-      </form>
+        </form>
+      </div>
     </div>
   </div>
 </section>
