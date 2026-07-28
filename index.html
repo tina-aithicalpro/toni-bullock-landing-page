@@ -627,9 +627,44 @@
 
   .media-sublabel { margin-top: 3rem; }
 
+  /* Podcast entry: same row rhythm as ".media-list a", but holds multiple platform links */
+  .media-entry {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.5rem;
+    padding: 1.5rem 0;
+  }
+  .media-platforms {
+    flex: 0 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 0.5rem;
+    max-width: 13rem;
+    justify-content: flex-end;
+  }
+  .media-platforms a {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--ink);
+    border: 1px solid var(--hairline);
+    border-radius: 2px;
+    padding: 0.3rem 0.55rem;
+    transition: color 0.15s ease, border-color 0.15s ease;
+  }
+  .media-platforms a:hover { color: var(--gold); border-color: var(--gold); }
+
   @media (max-width: 560px) {
     .media-list a { gap: 1rem; flex-wrap: wrap; }
-    .media-year { flex-basis: 100%; padding-top: 0; margin-bottom: 0.35rem; }
+    .media-list a .media-year { flex-basis: 100%; padding-top: 0; margin-bottom: 0.35rem; }
+    /* Podcast entry: stack as blocks so the title and platform buttons never overflow */
+    .media-entry { display: block; padding: 1.25rem 0; }
+    .media-entry .media-year { display: block; padding-top: 0; margin-bottom: 0.35rem; }
+    .media-entry .media-body { display: block; }
+    .media-platforms { max-width: none; justify-content: flex-start; margin-top: 0.75rem; }
   }
 
   /* CREDITS ROLL */
@@ -1239,6 +1274,21 @@
     <div class="media-copy">
     <h2 class="field-label">Media</h2>
     <ul class="media-list">
+      <li class="media-podcast">
+        <div class="media-entry">
+          <span class="media-year">2026</span>
+          <span class="media-body">
+            <span class="media-title">Inside Diverse Cinema, Episode 105: Emmy&reg; Award-Winning Producer Toni Bullock on Unscripted Television, Networking &amp; the Future of Storytelling</span>
+            <span class="media-type">Podcast</span>
+          </span>
+          <span class="media-platforms">
+            <a href="https://open.spotify.com/episode/4gnOIrYcnaDJdZo4SapNe1" target="_blank" rel="noopener noreferrer">Spotify</a>
+            <a href="https://www.iheart.com/podcast/269-inside-diverse-cinema-331889505/episode/emmy-award-winning-producer-toni-bullock-on-339799226/" target="_blank" rel="noopener noreferrer">iHeartRadio</a>
+            <a href="https://music.amazon.com/podcasts/0af1ddf9-e1fb-454a-b3f9-6af632cfdbf8/episodes/c38559ea-c3e4-48dd-a2a0-3b8d325747bb/inside-diverse-cinema-emmy%C2%AE-award-winning-producer-toni-bullock-on-unscripted-television-networking-the-future-of-storytelling" target="_blank" rel="noopener noreferrer">Amazon Music</a>
+            <a href="https://www.audible.com/podcast/ITEM_NAME/B0H7X519LQ" target="_blank" rel="noopener noreferrer">Audible</a>
+          </span>
+        </div>
+      </li>
       <li>
         <a href="https://influentialwomen.com/connect/toni-bullock" target="_blank" rel="noopener noreferrer">
           <span class="media-year">2026</span>
