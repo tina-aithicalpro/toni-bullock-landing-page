@@ -1070,6 +1070,7 @@
   .media-modal-dialog {
     position: relative; z-index: 1; background: var(--cream); border: 1px solid var(--hairline);
     border-radius: 6px; max-width: 34rem; width: 100%; padding: 2.25rem;
+    max-height: calc(100vh - 3rem); overflow-y: auto;
     box-shadow: 0 30px 70px -30px rgba(27, 27, 25, 0.6);
   }
   .media-modal-close {
@@ -1086,6 +1087,21 @@
     border: 1px solid var(--ink); border-radius: 2px; padding: 0.7rem 1.2rem; transition: background 0.2s ease, color 0.2s ease;
   }
   .media-modal-link:hover { background: var(--ink); color: var(--cream); }
+  /* Media area inside the modal: holds either a larger image or an embedded video player */
+  .media-modal-media { margin-bottom: 1.25rem; }
+  .media-modal-media:empty { display: none; }
+  .media-modal-media img { display: block; width: 100%; height: auto; border-radius: 4px; border: 1px solid var(--hairline); }
+  .media-modal-video { position: relative; width: 100%; padding-top: 56.25%; border-radius: 4px; overflow: hidden; border: 1px solid var(--hairline); background: #000; }
+  .media-modal-video iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+  /* Links row: supports one button (article/video) or several platform buttons (podcast) */
+  .media-modal-links { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .media-modal-links:empty { display: none; }
+  @media (max-width: 560px) {
+    /* Same layout, scaled to fit the viewport width — not a full-screen mobile-only design */
+    .media-modal { padding: 0.9rem; }
+    .media-modal-dialog { padding: 1.6rem 1.25rem; max-height: calc(100vh - 1.8rem); }
+    .media-modal-title { font-size: 1.35rem; }
+  }
 </style>
 <script type="application/ld+json">
 {
@@ -1397,7 +1413,7 @@
     <h2 class="field-label">Media</h2>
     <ul class="media-list">
       <li class="media-podcast">
-        <div class="media-entry">
+        <div class="media-entry" data-img="images/inside-diverse-cinema-ep105.jpeg" data-desc="An interview with Emmy Award-Winning producer Toni L. Bullock (&ldquo;Black Women Own the Conversation&rdquo;) exploring the creative and professional realities of unscripted television production. Covers producing and casting, the impact of her Emmy win, the producing ecosystems of Los Angeles and New York, and the importance of networking and professional reinvention in an evolving entertainment industry.">
           <span class="media-year">2026</span>
           <a class="media-body media-body-link" href="#podcast">
             <span class="media-title">Inside Diverse Cinema, Episode 105: Emmy&reg; Award-Winning Producer Toni Bullock on Unscripted Television, Networking &amp; the Future of Storytelling</span>
@@ -1412,7 +1428,7 @@
         </div>
       </li>
       <li>
-        <a href="https://influentialwomen.com/connect/toni-bullock" target="_blank" rel="noopener noreferrer">
+        <a href="https://influentialwomen.com/connect/toni-bullock" target="_blank" rel="noopener noreferrer" data-desc="An Influential Women feature profiling Toni Bullock and her career as a National Emmy Award-winning television producer.">
           <span class="media-year">2026</span>
           <span class="media-body">
             <span class="media-title">Influential Women feature</span>
@@ -1421,7 +1437,7 @@
           <svg class="media-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="M10 14L21 3"/></svg>
         </a>
       </li>      <li>
-        <a href="https://web.archive.org/web/20251207005939/https://boldjourney.com/meet-toni-bullock/" target="_blank" rel="noopener noreferrer">
+        <a href="https://web.archive.org/web/20251207005939/https://boldjourney.com/meet-toni-bullock/" target="_blank" rel="noopener noreferrer" data-desc="A BOLD Journey profile introducing Toni Bullock and her path as a television producer and founder.">
           <span class="media-year">2025</span>
           <span class="media-body">
             <span class="media-title">BOLD Journey: Meet Toni Bullock</span>
@@ -1431,7 +1447,7 @@
         </a>
       </li>
       <li>
-        <a href="https://www.stage32.com/blog/3627" target="_blank" rel="noopener noreferrer">
+        <a href="https://www.stage32.com/blog/3627" target="_blank" rel="noopener noreferrer" data-desc="A Stage 32 blog feature on Toni Bullock and her work in unscripted television production.">
           <span class="media-year">2024</span>
           <span class="media-body">
             <span class="media-title">Stage 32 blog feature</span>
@@ -1441,7 +1457,7 @@
         </a>
       </li>
       <li>
-        <a href="https://www.youtube.com/watch?v=MJoRexToOkw" target="_blank" rel="noopener noreferrer">
+        <a href="https://www.youtube.com/watch?v=MJoRexToOkw" target="_blank" rel="noopener noreferrer" data-desc="A Callsheets 2 Cocktails Black History Month panel in which Black television executives share career advice with the next generation of media professionals.">
           <span class="media-year">2023</span>
           <span class="media-body">
             <span class="media-title">C2C Black History Month: Black TV Executives Give Advice to Next Generation</span>
@@ -1451,7 +1467,7 @@
         </a>
       </li>
       <li>
-        <a href="https://heragenda.com/p/toni-bullock/" target="_blank" rel="noopener noreferrer">
+        <a href="https://heragenda.com/p/toni-bullock/" target="_blank" rel="noopener noreferrer" data-desc="An Her Agenda profile on Toni Bullock, covering her work as a television producer and founder of Callsheets 2 Cocktails.">
           <span class="media-year">2022</span>
           <span class="media-body">
             <span class="media-title">Her Agenda profile</span>
@@ -1461,7 +1477,7 @@
         </a>
       </li>
       <li>
-        <a href="https://open.spotify.com/episode/3WAC663eNC4CC4zHYLEEaA" target="_blank" rel="noopener noreferrer">
+        <a href="https://open.spotify.com/episode/3WAC663eNC4CC4zHYLEEaA" target="_blank" rel="noopener noreferrer" data-desc="A 2021 podcast interview with Toni Bullock on her career in television production.">
           <span class="media-year">2021</span>
           <span class="media-body">
             <span class="media-title">Podcast interview</span>
@@ -1471,7 +1487,7 @@
         </a>
       </li>
       <li>
-        <a href="https://web.archive.org/web/20221002121547/http://voyagela.com/interview/meet-toni-bullock-tv-producer-creator-callsheets-2-cocktails/" target="_blank" rel="noopener noreferrer">
+        <a href="https://web.archive.org/web/20221002121547/http://voyagela.com/interview/meet-toni-bullock-tv-producer-creator-callsheets-2-cocktails/" target="_blank" rel="noopener noreferrer" data-desc="A Voyage LA interview: Meet Toni Bullock, TV producer and creator of Callsheets 2 Cocktails.">
           <span class="media-year">2019</span>
           <span class="media-body">
             <span class="media-title">Voyage LA: Meet Toni Bullock, TV Producer + Creator, Callsheets 2 Cocktails</span>
@@ -1486,7 +1502,7 @@
     <h3 class="field-label media-sublabel">Additional features</h3>
     <ul class="media-list">
       <li>
-        <a href="https://www.youtube.com/watch?v=ExgU-QCI6aI" target="_blank" rel="noopener noreferrer">
+        <a href="https://www.youtube.com/watch?v=ExgU-QCI6aI" target="_blank" rel="noopener noreferrer" data-desc="A virtual interview with Toni Bullock for the Had I Known series, on her career and experience in the entertainment industry.">
           <span class="media-year"></span>
           <span class="media-body">
             <span class="media-title">Had I Known virtual interview</span>
@@ -1496,7 +1512,7 @@
         </a>
       </li>
       <li>
-        <a href="https://www.hamilton.edu/news/stories/opportunity-program-podcast-aaron-ray" target="_blank" rel="noopener noreferrer">
+        <a href="https://www.hamilton.edu/news/stories/opportunity-program-podcast-aaron-ray" target="_blank" rel="noopener noreferrer" data-desc="A Hamilton College Opportunity Program podcast episode featuring Toni Bullock.">
           <span class="media-year"></span>
           <span class="media-body">
             <span class="media-title">Hamilton College Opportunity Program podcast</span>
@@ -1506,7 +1522,7 @@
         </a>
       </li>
       <li>
-        <a href="https://ebonigrayportfolio.wixsite.com/mysite/post/toni-bullock-on-her-life-in-the-entertainment-industry-and-the-path-to-her-success" target="_blank" rel="noopener noreferrer">
+        <a href="https://ebonigrayportfolio.wixsite.com/mysite/post/toni-bullock-on-her-life-in-the-entertainment-industry-and-the-path-to-her-success" target="_blank" rel="noopener noreferrer" data-desc="An Her Agenda piece by Eboni Gray on Toni Bullock&rsquo;s life in the entertainment industry and the path to her success.">
           <span class="media-year"></span>
           <span class="media-body">
             <span class="media-title">Her Agenda / Eboni Gray: Toni Bullock on her life in the entertainment industry and the path to her success</span>
@@ -1516,7 +1532,7 @@
         </a>
       </li>
       <li>
-        <a href="https://www.marvelwood.org/news/community-spotlight-bullock-toni" target="_blank" rel="noopener noreferrer">
+        <a href="https://www.marvelwood.org/news/community-spotlight-bullock-toni" target="_blank" rel="noopener noreferrer" data-desc="A Marvelwood community spotlight featuring Toni Bullock.">
           <span class="media-year"></span>
           <span class="media-body">
             <span class="media-title">Marvelwood community spotlight</span>
@@ -1780,11 +1796,9 @@
     <button class="media-modal-close" type="button" data-close aria-label="Close">&times;</button>
     <span class="media-modal-type" id="media-modal-type"></span>
     <h3 class="media-modal-title" id="media-modal-title"></h3>
+    <div class="media-modal-media" id="media-modal-media"></div>
     <p class="media-modal-desc" id="media-modal-desc"></p>
-    <a class="media-modal-link" id="media-modal-link" href="#" target="_blank" rel="noopener noreferrer">
-      Visit source
-      <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="M10 14L21 3"/></svg>
-    </a>
+    <div class="media-modal-links" id="media-modal-links"></div>
   </div>
 </div>
 
@@ -1899,45 +1913,127 @@
     });
   }
 
-  // Media detail modal: intercept external media-card clicks, show details in-page,
-  // then link out to the original source. Reads data straight from the clicked card
-  // (title / type / year) plus an optional data-desc attribute. Degrades gracefully:
-  // with JS off, the cards still navigate to their source URLs.
+  // Media detail modal: one reusable modal, fed by each clicked media card's data.
+  // Contents adapt per item type — Video items embed a real player; Podcast/Article
+  // items show the image (when one exists) plus external listen/read buttons. Reads
+  // title / type / year straight from the card, plus optional data-desc / data-img.
+  // Degrades gracefully: with JS off, the cards still navigate to their source URLs.
   (function () {
     const modal = document.getElementById('media-modal');
     if (!modal) return;
-    const elType = document.getElementById('media-modal-type');
+    const elType  = document.getElementById('media-modal-type');
     const elTitle = document.getElementById('media-modal-title');
-    const elDesc = document.getElementById('media-modal-desc');
-    const elLink = document.getElementById('media-modal-link');
+    const elMedia = document.getElementById('media-modal-media');
+    const elDesc  = document.getElementById('media-modal-desc');
+    const elLinks = document.getElementById('media-modal-links');
     let lastFocused = null;
 
-    function txt(a, sel) { const el = a.querySelector(sel); return el ? el.textContent.trim() : ''; }
+    function txt(el, sel) { const n = el.querySelector(sel); return n ? n.textContent.trim() : ''; }
 
-    function openModal(a) {
-      const type = txt(a, '.media-type');
-      const year = txt(a, '.media-year');
-      elType.textContent = [type, year].filter(Boolean).join('  ·  ');
-      elTitle.textContent = txt(a, '.media-title');
-      const desc = a.getAttribute('data-desc') || '';
-      if (desc) { elDesc.textContent = desc; elDesc.hidden = false; } else { elDesc.hidden = true; }
-      elLink.href = a.href;
+    // Pull the YouTube video id out of a watch / youtu.be / embed URL, else null.
+    function youTubeId(url) {
+      const m = url.match(/(?:youtube\.com\/(?:watch\?(?:.*&)?v=|embed\/)|youtu\.be\/)([\w-]{11})/);
+      return m ? m[1] : null;
+    }
+
+    // Build a labelled external button (opens in a new tab).
+    function linkButton(href, label) {
+      const a = document.createElement('a');
+      a.className = 'media-modal-link';
+      a.href = href;
+      a.target = '_blank';
+      a.rel = 'noopener noreferrer';
+      a.innerHTML = label + ' <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="M10 14L21 3"/></svg>';
+      return a;
+    }
+
+    // card    = element the click handler is bound to (holds .media-title / .media-type / data-*)
+    // primary = the <a> whose href is the item's own source URL
+    // links   = optional list of extra {href,label} buttons (podcast platforms)
+    function openModal(card, primary, links) {
+      const type = txt(card, '.media-type');
+      const year = txt(card, '.media-year');
+      const href = primary.getAttribute('href');
+      elType.textContent  = [type, year].filter(Boolean).join('  ·  ');
+      elTitle.textContent = txt(card, '.media-title');
+
+      // Description
+      const desc = card.getAttribute('data-desc') || '';
+      elDesc.textContent = desc;
+      elDesc.hidden = !desc;
+
+      // Media: video player for Video items, otherwise an image when one is available.
+      elMedia.innerHTML = '';
+      const title = elTitle.textContent;
+      const isVideo = type.toLowerCase() === 'video';
+      const ytId = isVideo ? youTubeId(href) : null;
+      if (ytId) {
+        // Real embedded player, autoplay OFF (no autoplay param).
+        const wrap = document.createElement('div');
+        wrap.className = 'media-modal-video';
+        const iframe = document.createElement('iframe');
+        iframe.src = 'https://www.youtube-nocookie.com/embed/' + ytId;
+        iframe.title = title;
+        iframe.allow = 'accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+        iframe.setAttribute('allowfullscreen', '');
+        wrap.appendChild(iframe);
+        elMedia.appendChild(wrap);
+      } else {
+        // Reuse the item's existing image. For a YouTube video with no local image we
+        // fall back to the video's own thumbnail (still the item's real thumbnail).
+        const vid = isVideo ? youTubeId(href) : null;
+        const src = card.getAttribute('data-img')
+                 || (vid ? 'https://img.youtube.com/vi/' + vid + '/hqdefault.jpg' : '');
+        if (src) {
+          const im = document.createElement('img');
+          im.src = src;
+          im.alt = title;
+          im.loading = 'lazy';
+          elMedia.appendChild(im);
+        }
+      }
+
+      // Links: platform buttons when supplied, otherwise a single source button
+      // labelled to match the type (Listen / Read / Watch / Visit).
+      elLinks.innerHTML = '';
+      if (links && links.length) {
+        links.forEach(l => elLinks.appendChild(linkButton(l.href, l.label)));
+      } else {
+        const t = type.toLowerCase();
+        const label = t === 'podcast' ? 'Listen' : t === 'article' ? 'Read the article'
+                    : t === 'video' ? 'Watch on YouTube' : 'Visit source';
+        elLinks.appendChild(linkButton(href, label));
+      }
+
       lastFocused = document.activeElement;
       modal.hidden = false;
       document.body.style.overflow = 'hidden';
       modal.querySelector('.media-modal-close').focus();
     }
+
     function closeModal() {
       modal.hidden = true;
+      elMedia.innerHTML = '';   // tearing down the iframe stops any video playback
       document.body.style.overflow = '';
       if (lastFocused && lastFocused.focus) lastFocused.focus();
     }
 
-    // Only the external card links (direct <a> children of <li>); not the podcast
-    // detail-section link (#podcast) or the nested platform buttons.
+    // Standard media rows: the direct <a> child of each <li> is both the card and the source link.
     document.querySelectorAll('.media-list li > a[href^="http"]').forEach(a => {
-      a.addEventListener('click', (e) => { e.preventDefault(); openModal(a); });
+      a.addEventListener('click', (e) => { e.preventDefault(); openModal(a, a, null); });
     });
+
+    // Podcast entry: the title link points at #podcast, and the item's listen links live
+    // in .media-platforms. Open the modal from the title, feeding it all platform buttons.
+    document.querySelectorAll('.media-list li.media-podcast .media-entry').forEach(entry => {
+      const titleLink = entry.querySelector('.media-body-link');
+      if (!titleLink) return;
+      const links = Array.from(entry.querySelectorAll('.media-platforms a'))
+        .map(a => ({ href: a.href, label: a.textContent.trim() }));
+      const source = links[0] ? { getAttribute: () => links[0].href } : titleLink;
+      titleLink.addEventListener('click', (e) => { e.preventDefault(); openModal(entry, source, links); });
+    });
+
     modal.querySelectorAll('[data-close]').forEach(el => el.addEventListener('click', closeModal));
     document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !modal.hidden) closeModal(); });
   })();
