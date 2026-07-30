@@ -1876,6 +1876,11 @@
         </div>
 
         <form id="contact-form" class="contact-form" novalidate>
+        <!-- Honeypot: hidden from real users; bots that fill it are silently dropped -->
+        <div aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden;">
+          <label for="f-company">Company (leave this field empty)</label>
+          <input type="text" id="f-company" name="company" tabindex="-1" autocomplete="off">
+        </div>
         <div class="form-two-col">
           <div class="form-row" id="row-name">
             <label for="f-name">Name</label>
@@ -1958,6 +1963,7 @@
   </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <script>
   // Mobile menu toggle
   const menuToggle = document.getElementById('menu-toggle');
@@ -1991,13 +1997,11 @@
     });
   });
 
-  // Contact form: validate, then POST to the GoHighLevel inbound webhook.
-  // The email notification to Toni is handled entirely on the GoHighLevel side
-  // (a "Send Email" action in the workflow attached to this Inbound Webhook trigger),
-  // NOT by this codebase. This webhook is now the only delivery path.
-  // The URL below is an inbound-only CRM capture hook; it is expected to be visible
-  // in client-side JS and carries no auth token, so it is intentionally not obfuscated.
-  const GHL_WEBHOOK_URL = 'https://services.leadconnectorhq.com/hooks/BIYAuzDQSzo2eAudvlab/webhook-trigger/8421837f-68a6-47fc-8c89-e1b68c42164c';
+  // Contact form: validate, then send via EmailJS. No server POST — JS handles delivery.
+  // Destination inbox + subject are configured on the EmailJS template, not in this code.
+  emailjs.init('nQg6lBZvRk59LIYWp');
+  const EMAILJS_SERVICE = 'service_cv0d9ya';
+  const EMAILJS_TEMPLATE = 'template_2nz61zp';
   const contactForm = document.getElementById('contact-form');
   const formConfirm = document.getElementById('form-confirm');
   const formError = document.getElementById('form-error');
@@ -2008,6 +2012,14 @@
       e.preventDefault();
       formConfirm.classList.remove('show');
       formError.classList.remove('show');
+
+      // Honeypot: a filled hidden field means a bot — show success, send nothing.
+      const honeypot = document.getElementById('f-company');
+      if (honeypot && honeypot.value.trim() !== '') {
+        contactForm.reset();
+        formConfirm.classList.add('show');
+        return;
+      }
 
       const fields = [
         { id: 'f-name', row: 'row-name' },
@@ -2039,29 +2051,24 @@
         return;
       }
 
-      const payload = {
+      // Template params — must match the EmailJS template's {{name}} {{email}} {{message}}.
+      // `reason` is sent as an extra param (harmless if the template doesn't use it).
+      const params = {
         name: document.getElementById('f-name').value.trim(),
         email: emailEl.value.trim(),
-        reason: document.getElementById('f-reason').value,
         message: document.getElementById('f-message').value.trim(),
-        source: 'tonibullock.com contact form',
-        submitted_at: new Date().toISOString(),
+        reason: document.getElementById('f-reason').value,
       };
 
       const originalLabel = submitBtn ? submitBtn.textContent : '';
       if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = 'Sending...'; }
 
       try {
-        const res = await fetch(GHL_WEBHOOK_URL, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload),
-        });
-        if (!res.ok) throw new Error('Webhook responded with status ' + res.status);
+        await emailjs.send(EMAILJS_SERVICE, EMAILJS_TEMPLATE, params);
         contactForm.reset();
         formConfirm.classList.add('show');
       } catch (err) {
-        console.error('Contact form submission failed:', err);
+        console.error('Contact form (EmailJS) send failed:', err);
         formError.classList.add('show');
       } finally {
         if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = originalLabel; }
