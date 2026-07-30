@@ -711,7 +711,7 @@
     color: var(--accent);
   }
 
-  .media-body { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+  .media-body { flex: 1; min-width: 0; display: flex; flex-direction: column; align-items: flex-start; text-align: left; }
   /* Type reads as a small label above the title; description sits below */
   .media-body .media-type { order: -1; margin-bottom: 0.3rem; }
 
@@ -1216,14 +1216,14 @@
     background: var(--accent); border: 1px solid var(--accent); border-radius: 2px; padding: 0.7rem 1.2rem; transition: background 0.2s ease, border-color 0.2s ease;
   }
   .media-modal-link:hover { background: var(--accent-dark); border-color: var(--accent-dark); color: #FFFFFF; }
-  /* Plain text link (not a button) — used for the podcast's Spotify link */
+  /* Plain link (not a button) — used for the podcast's Spotify link; same external-link icon as the others */
   .media-modal-plainlink {
-    display: inline-flex; align-items: center; gap: 0.4rem;
+    display: inline-flex; align-items: center; gap: 0.45rem;
     font-family: 'Inter', sans-serif; font-weight: 600; font-size: 0.9rem;
-    color: var(--accent); text-decoration: underline; text-underline-offset: 3px;
+    color: var(--accent); text-decoration: none;
   }
   .media-modal-plainlink:hover { color: var(--accent-dark); }
-  .media-modal-plainlink svg { width: 0.85rem; height: 0.85rem; }
+  .media-modal-plainlink svg { width: 0.95rem; height: 0.95rem; }
   /* Media area inside the modal: holds either a larger image or an embedded video player */
   .media-modal-media { margin-bottom: 1.25rem; }
   .media-modal-media:empty { display: none; }
@@ -2088,6 +2088,12 @@
 
     function txt(el, sel) { const n = el.querySelector(sel); return n ? n.textContent.trim() : ''; }
 
+    // Pull the YouTube video id out of a watch / youtu.be / embed URL, else null.
+    function youTubeId(url) {
+      const m = url.match(/(?:youtube\.com\/(?:watch\?(?:.*&)?v=|embed\/)|youtu\.be\/)([\w-]{11})/);
+      return m ? m[1] : null;
+    }
+
     // Build a labelled external link (opens in a new tab). `plain` renders a text
     // link instead of a filled button (used for the podcast's Spotify link).
     function linkButton(href, label, plain) {
@@ -2110,12 +2116,29 @@
       const img = card.getAttribute('data-img') || '';
       const desc = card.getAttribute('data-desc') || '';
 
-      // Image (top)
+      // Media (top): a playable embed for Video items; the item's own cover when it
+      // has one (the podcast); Toni's portrait for articles; nothing for other podcasts.
       elMedia.innerHTML = '';
-      if (img) {
-        const im = document.createElement('img');
-        im.src = img; im.alt = title || outlet; im.loading = 'lazy';
-        elMedia.appendChild(im);
+      const t = type.toLowerCase();
+      const href = card.getAttribute('href') || '';
+      const ytId = t === 'video' ? youTubeId(href) : null;
+      if (ytId) {
+        const wrap = document.createElement('div');
+        wrap.className = 'media-modal-video';
+        const iframe = document.createElement('iframe');
+        iframe.src = 'https://www.youtube-nocookie.com/embed/' + ytId;
+        iframe.title = title;
+        iframe.allow = 'accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+        iframe.setAttribute('allowfullscreen', '');
+        wrap.appendChild(iframe);
+        elMedia.appendChild(wrap);
+      } else {
+        const src = img || (t !== 'podcast' ? 'images/toni-bullock-press.webp' : '');
+        if (src) {
+          const im = document.createElement('img');
+          im.src = src; im.alt = title || 'Toni Bullock'; im.loading = 'lazy';
+          elMedia.appendChild(im);
+        }
       }
       elOutlet.textContent = outlet;
       elTitle.textContent = title;
