@@ -1070,22 +1070,39 @@
   .media-modal-dialog {
     position: relative; z-index: 1; background: var(--cream); border: 1px solid var(--hairline);
     border-radius: 6px; max-width: 34rem; width: 100%; padding: 2.25rem;
+    max-height: 88vh; overflow-y: auto; -webkit-overflow-scrolling: touch;
     box-shadow: 0 30px 70px -30px rgba(27, 27, 25, 0.6);
   }
   .media-modal-close {
     position: absolute; top: 0.6rem; right: 0.85rem; background: none; border: none; cursor: pointer;
-    font-size: 1.7rem; line-height: 1; color: rgba(27, 27, 25, 0.55); padding: 0.25rem 0.4rem;
+    font-size: 1.7rem; line-height: 1; color: rgba(27, 27, 25, 0.55); padding: 0.25rem 0.4rem; z-index: 2;
   }
   .media-modal-close:hover { color: var(--accent); }
   .media-modal-type { display: block; font-family: 'Inter', sans-serif; font-size: 0.7rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--emerald); margin-bottom: 0.6rem; }
-  .media-modal-title { font-family: 'Forum', serif; font-weight: 400; font-size: 1.6rem; line-height: 1.25; margin-bottom: 0.9rem; }
+  .media-modal-title { font-family: 'Forum', serif; font-weight: 400; font-size: 1.6rem; line-height: 1.25; margin-bottom: 0.9rem; padding-right: 1.5rem; }
+  /* Media well: holds either the enlarged thumbnail (podcast/article) or the video embed (video items) */
+  .media-modal-media { margin-bottom: 1.4rem; }
+  .media-modal-media[hidden] { display: none; }
+  .media-modal-img { display: block; width: 100%; height: auto; border: 1px solid var(--hairline); border-radius: 4px; }
+  .media-modal-video { position: relative; width: 100%; padding-top: 56.25%; border-radius: 4px; overflow: hidden; border: 1px solid var(--hairline); background: #000; }
+  .media-modal-video iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
   .media-modal-desc { font-size: 0.95rem; color: rgba(27, 27, 25, 0.8); margin-bottom: 1.5rem; }
+  .media-modal-desc[hidden] { display: none; }
   .media-modal-link {
     display: inline-flex; align-items: center; gap: 0.5rem; font-family: 'Inter', sans-serif; font-weight: 600;
     font-size: 0.85rem; letter-spacing: 0.03em; text-decoration: none; color: var(--ink);
     border: 1px solid var(--ink); border-radius: 2px; padding: 0.7rem 1.2rem; transition: background 0.2s ease, color 0.2s ease;
   }
+  .media-modal-link[hidden] { display: none; }
   .media-modal-link:hover { background: var(--ink); color: var(--cream); }
+
+  /* Mobile: same modal, proportionally shrunk to fit the viewport (not a full-screen takeover) */
+  @media (max-width: 560px) {
+    .media-modal { padding: 1rem; }
+    .media-modal-dialog { padding: 1.6rem 1.35rem; max-height: 90vh; }
+    .media-modal-title { font-size: 1.35rem; }
+    .media-modal-desc { font-size: 0.9rem; }
+  }
 </style>
 <script type="application/ld+json">
 {
@@ -1399,7 +1416,13 @@
       <li class="media-podcast">
         <div class="media-entry">
           <span class="media-year">2026</span>
-          <a class="media-body media-body-link" href="#podcast">
+          <a class="media-body media-body-link" href="#podcast"
+             data-media-item
+             data-img="images/inside-diverse-cinema-ep105.jpeg"
+             data-img-alt="Inside Diverse Cinema Episode 105 cover art: guest Toni Bullock, Emmy Award-Winning Producer, hosted by La'Chnis Robinson Jordan"
+             data-desc="Host La&rsquo;Chnis Robinson Jordan &middot; July 28, 2026 &middot; 51 min. An interview with Emmy Award-Winning producer Toni L. Bullock (&ldquo;Black Women Own the Conversation&rdquo;) exploring the creative and professional realities of unscripted television production. Covers producing and casting, the impact of her Emmy win, the producing ecosystems of Los Angeles and New York, and the importance of networking and professional reinvention in an evolving entertainment industry."
+             data-link="https://open.spotify.com/episode/4gnOIrYcnaDJdZo4SapNe1"
+             data-link-label="Listen on Spotify">
             <span class="media-title">Inside Diverse Cinema, Episode 105: Emmy&reg; Award-Winning Producer Toni Bullock on Unscripted Television, Networking &amp; the Future of Storytelling</span>
             <span class="media-type">Podcast</span>
           </a>
@@ -1412,7 +1435,10 @@
         </div>
       </li>
       <li>
-        <a href="https://influentialwomen.com/connect/toni-bullock" target="_blank" rel="noopener noreferrer">
+        <a href="https://influentialwomen.com/connect/toni-bullock" target="_blank" rel="noopener noreferrer"
+           data-media-item
+           data-link-label="Read the feature"
+           data-desc="A feature by Influential Women profiling Toni Bullock, the National Emmy Award-winning television producer and founder of Callsheets 2 Cocktails and Effortlessly Coordinated.">
           <span class="media-year">2026</span>
           <span class="media-body">
             <span class="media-title">Influential Women feature</span>
@@ -1421,7 +1447,10 @@
           <svg class="media-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="M10 14L21 3"/></svg>
         </a>
       </li>      <li>
-        <a href="https://web.archive.org/web/20251207005939/https://boldjourney.com/meet-toni-bullock/" target="_blank" rel="noopener noreferrer">
+        <a href="https://web.archive.org/web/20251207005939/https://boldjourney.com/meet-toni-bullock/" target="_blank" rel="noopener noreferrer"
+           data-media-item
+           data-link-label="Read the feature"
+           data-desc="A BOLD Journey feature introducing Toni Bullock &mdash; National Emmy Award-winning television producer and founder of Callsheets 2 Cocktails and Effortlessly Coordinated &mdash; and her path through the entertainment industry.">
           <span class="media-year">2025</span>
           <span class="media-body">
             <span class="media-title">BOLD Journey: Meet Toni Bullock</span>
@@ -1431,7 +1460,10 @@
         </a>
       </li>
       <li>
-        <a href="https://www.stage32.com/blog/3627" target="_blank" rel="noopener noreferrer">
+        <a href="https://www.stage32.com/blog/3627" target="_blank" rel="noopener noreferrer"
+           data-media-item
+           data-link-label="Read the feature"
+           data-desc="A Stage 32 blog feature spotlighting Toni Bullock, National Emmy Award-winning television producer and founder of Callsheets 2 Cocktails.">
           <span class="media-year">2024</span>
           <span class="media-body">
             <span class="media-title">Stage 32 blog feature</span>
@@ -1441,7 +1473,10 @@
         </a>
       </li>
       <li>
-        <a href="https://www.youtube.com/watch?v=MJoRexToOkw" target="_blank" rel="noopener noreferrer">
+        <a href="https://www.youtube.com/watch?v=MJoRexToOkw" target="_blank" rel="noopener noreferrer"
+           data-media-item
+           data-embed="https://www.youtube-nocookie.com/embed/MJoRexToOkw"
+           data-desc="A Callsheets 2 Cocktails (C2C) Black History Month conversation in which Black television executives share advice for the next generation of media professionals. Callsheets 2 Cocktails is the professional community Toni Bullock founded to connect, educate, and empower women in media through panels and networking events.">
           <span class="media-year">2023</span>
           <span class="media-body">
             <span class="media-title">C2C Black History Month: Black TV Executives Give Advice to Next Generation</span>
@@ -1451,7 +1486,10 @@
         </a>
       </li>
       <li>
-        <a href="https://heragenda.com/p/toni-bullock/" target="_blank" rel="noopener noreferrer">
+        <a href="https://heragenda.com/p/toni-bullock/" target="_blank" rel="noopener noreferrer"
+           data-media-item
+           data-link-label="Read the profile"
+           data-desc="An Her Agenda profile of Toni Bullock, National Emmy Award-winning television producer and founder of Callsheets 2 Cocktails.">
           <span class="media-year">2022</span>
           <span class="media-body">
             <span class="media-title">Her Agenda profile</span>
@@ -1461,7 +1499,10 @@
         </a>
       </li>
       <li>
-        <a href="https://open.spotify.com/episode/3WAC663eNC4CC4zHYLEEaA" target="_blank" rel="noopener noreferrer">
+        <a href="https://open.spotify.com/episode/3WAC663eNC4CC4zHYLEEaA" target="_blank" rel="noopener noreferrer"
+           data-media-item
+           data-link-label="Listen on Spotify"
+           data-desc="A podcast interview with Toni Bullock, National Emmy Award-winning television producer and founder of Callsheets 2 Cocktails.">
           <span class="media-year">2021</span>
           <span class="media-body">
             <span class="media-title">Podcast interview</span>
@@ -1471,7 +1512,10 @@
         </a>
       </li>
       <li>
-        <a href="https://web.archive.org/web/20221002121547/http://voyagela.com/interview/meet-toni-bullock-tv-producer-creator-callsheets-2-cocktails/" target="_blank" rel="noopener noreferrer">
+        <a href="https://web.archive.org/web/20221002121547/http://voyagela.com/interview/meet-toni-bullock-tv-producer-creator-callsheets-2-cocktails/" target="_blank" rel="noopener noreferrer"
+           data-media-item
+           data-link-label="Read the interview"
+           data-desc="A Voyage LA interview with Toni Bullock &mdash; TV producer and creator of Callsheets 2 Cocktails &mdash; on her career in television and building community for women in media.">
           <span class="media-year">2019</span>
           <span class="media-body">
             <span class="media-title">Voyage LA: Meet Toni Bullock, TV Producer + Creator, Callsheets 2 Cocktails</span>
@@ -1486,7 +1530,10 @@
     <h3 class="field-label media-sublabel">Additional features</h3>
     <ul class="media-list">
       <li>
-        <a href="https://www.youtube.com/watch?v=ExgU-QCI6aI" target="_blank" rel="noopener noreferrer">
+        <a href="https://www.youtube.com/watch?v=ExgU-QCI6aI" target="_blank" rel="noopener noreferrer"
+           data-media-item
+           data-embed="https://www.youtube-nocookie.com/embed/ExgU-QCI6aI"
+           data-desc="A virtual interview with Toni Bullock, National Emmy Award-winning television producer and founder of Callsheets 2 Cocktails, for the Had I Known series.">
           <span class="media-year"></span>
           <span class="media-body">
             <span class="media-title">Had I Known virtual interview</span>
@@ -1496,7 +1543,10 @@
         </a>
       </li>
       <li>
-        <a href="https://www.hamilton.edu/news/stories/opportunity-program-podcast-aaron-ray" target="_blank" rel="noopener noreferrer">
+        <a href="https://www.hamilton.edu/news/stories/opportunity-program-podcast-aaron-ray" target="_blank" rel="noopener noreferrer"
+           data-media-item
+           data-link-label="Listen to the podcast"
+           data-desc="A Hamilton College Opportunity Program podcast episode featuring Toni Bullock, National Emmy Award-winning television producer and founder of Callsheets 2 Cocktails.">
           <span class="media-year"></span>
           <span class="media-body">
             <span class="media-title">Hamilton College Opportunity Program podcast</span>
@@ -1506,7 +1556,10 @@
         </a>
       </li>
       <li>
-        <a href="https://ebonigrayportfolio.wixsite.com/mysite/post/toni-bullock-on-her-life-in-the-entertainment-industry-and-the-path-to-her-success" target="_blank" rel="noopener noreferrer">
+        <a href="https://ebonigrayportfolio.wixsite.com/mysite/post/toni-bullock-on-her-life-in-the-entertainment-industry-and-the-path-to-her-success" target="_blank" rel="noopener noreferrer"
+           data-media-item
+           data-link-label="Read the article"
+           data-desc="An Her Agenda piece by Eboni Gray on Toni Bullock&rsquo;s life in the entertainment industry and the path to her success.">
           <span class="media-year"></span>
           <span class="media-body">
             <span class="media-title">Her Agenda / Eboni Gray: Toni Bullock on her life in the entertainment industry and the path to her success</span>
@@ -1516,7 +1569,10 @@
         </a>
       </li>
       <li>
-        <a href="https://www.marvelwood.org/news/community-spotlight-bullock-toni" target="_blank" rel="noopener noreferrer">
+        <a href="https://www.marvelwood.org/news/community-spotlight-bullock-toni" target="_blank" rel="noopener noreferrer"
+           data-media-item
+           data-link-label="Read the spotlight"
+           data-desc="A Marvelwood community spotlight featuring Toni Bullock, National Emmy Award-winning television producer and founder of Callsheets 2 Cocktails.">
           <span class="media-year"></span>
           <span class="media-body">
             <span class="media-title">Marvelwood community spotlight</span>
@@ -1780,9 +1836,13 @@
     <button class="media-modal-close" type="button" data-close aria-label="Close">&times;</button>
     <span class="media-modal-type" id="media-modal-type"></span>
     <h3 class="media-modal-title" id="media-modal-title"></h3>
+    <div class="media-modal-media" id="media-modal-media" hidden>
+      <img class="media-modal-img" id="media-modal-img" src="" alt="" hidden>
+      <div class="media-modal-video" id="media-modal-video" hidden></div>
+    </div>
     <p class="media-modal-desc" id="media-modal-desc"></p>
     <a class="media-modal-link" id="media-modal-link" href="#" target="_blank" rel="noopener noreferrer">
-      Visit source
+      <span id="media-modal-link-label">Visit source</span>
       <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="M10 14L21 3"/></svg>
     </a>
   </div>
@@ -1899,29 +1959,80 @@
     });
   }
 
-  // Media detail modal: intercept external media-card clicks, show details in-page,
-  // then link out to the original source. Reads data straight from the clicked card
-  // (title / type / year) plus an optional data-desc attribute. Degrades gracefully:
-  // with JS off, the cards still navigate to their source URLs.
+  // Media detail modal: one reusable modal fed by each media item's data. Clicking any
+  // media item (video / podcast / article) opens the modal instead of navigating away.
+  // Item data is read from the clicked element: title / type / year from the card markup,
+  // plus optional data-desc (expanded copy), data-img (enlarged thumbnail), data-embed
+  // (video player src) and data-link / data-link-label (external listen/read button).
+  // Video items get a real embedded player (autoplay off); podcast/article items get the
+  // enlarged thumbnail when one exists plus the external link button. Degrades gracefully:
+  // with JS off, items still navigate to their source URLs.
   (function () {
     const modal = document.getElementById('media-modal');
     if (!modal) return;
     const elType = document.getElementById('media-modal-type');
     const elTitle = document.getElementById('media-modal-title');
+    const elMedia = document.getElementById('media-modal-media');
+    const elImg = document.getElementById('media-modal-img');
+    const elVideo = document.getElementById('media-modal-video');
     const elDesc = document.getElementById('media-modal-desc');
     const elLink = document.getElementById('media-modal-link');
+    const elLinkLabel = document.getElementById('media-modal-link-label');
     let lastFocused = null;
 
-    function txt(a, sel) { const el = a.querySelector(sel); return el ? el.textContent.trim() : ''; }
+    function fieldText(el, sel) {
+      // Look inside the clicked element first, then within its <li> row (covers the
+      // podcast entry, whose year sits beside the link rather than inside it).
+      const found = el.querySelector(sel) || (el.closest('li') && el.closest('li').querySelector(sel));
+      return found ? found.textContent.trim() : '';
+    }
 
-    function openModal(a) {
-      const type = txt(a, '.media-type');
-      const year = txt(a, '.media-year');
+    function openModal(el) {
+      const type = el.getAttribute('data-type') || fieldText(el, '.media-type');
+      const year = fieldText(el, '.media-year');
       elType.textContent = [type, year].filter(Boolean).join('  ·  ');
-      elTitle.textContent = txt(a, '.media-title');
-      const desc = a.getAttribute('data-desc') || '';
+      elTitle.textContent = el.getAttribute('data-title') || fieldText(el, '.media-title');
+
+      // Media well: video embed takes precedence; otherwise the enlarged thumbnail if present.
+      const embed = el.getAttribute('data-embed') || '';
+      const img = el.getAttribute('data-img') || '';
+      elVideo.innerHTML = '';
+      elVideo.hidden = true;
+      elImg.hidden = true;
+      elImg.removeAttribute('src');
+      if (embed) {
+        const frame = document.createElement('iframe');
+        frame.src = embed; // no autoplay param -> playback starts only on user action
+        frame.title = elTitle.textContent;
+        frame.loading = 'lazy';
+        frame.allow = 'accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+        frame.setAttribute('allowfullscreen', '');
+        elVideo.appendChild(frame);
+        elVideo.hidden = false;
+        elMedia.hidden = false;
+      } else if (img) {
+        elImg.src = img;
+        elImg.alt = el.getAttribute('data-img-alt') || elTitle.textContent;
+        elImg.hidden = false;
+        elMedia.hidden = false;
+      } else {
+        elMedia.hidden = true;
+      }
+
+      const desc = el.getAttribute('data-desc') || '';
       if (desc) { elDesc.textContent = desc; elDesc.hidden = false; } else { elDesc.hidden = true; }
-      elLink.href = a.href;
+
+      // External button: video items rely on the embed, so the link is only shown when a
+      // listen/read URL is provided (data-link, or the item's own external href).
+      const href = el.getAttribute('data-link') || (el.getAttribute('href') && el.getAttribute('href').indexOf('http') === 0 ? el.getAttribute('href') : '');
+      if (href && !embed) {
+        elLink.href = href;
+        elLinkLabel.textContent = el.getAttribute('data-link-label') || 'Visit source';
+        elLink.hidden = false;
+      } else {
+        elLink.hidden = true;
+      }
+
       lastFocused = document.activeElement;
       modal.hidden = false;
       document.body.style.overflow = 'hidden';
@@ -1929,14 +2040,16 @@
     }
     function closeModal() {
       modal.hidden = true;
+      elVideo.innerHTML = ''; // stop any playing video
+      elVideo.hidden = true;
       document.body.style.overflow = '';
       if (lastFocused && lastFocused.focus) lastFocused.focus();
     }
 
-    // Only the external card links (direct <a> children of <li>); not the podcast
-    // detail-section link (#podcast) or the nested platform buttons.
-    document.querySelectorAll('.media-list li > a[href^="http"]').forEach(a => {
-      a.addEventListener('click', (e) => { e.preventDefault(); openModal(a); });
+    // Every media item opts in with data-media-item, so one handler covers videos,
+    // podcasts and articles across both media lists and the featured podcast row.
+    document.querySelectorAll('[data-media-item]').forEach(el => {
+      el.addEventListener('click', (e) => { e.preventDefault(); openModal(el); });
     });
     modal.querySelectorAll('[data-close]').forEach(el => el.addEventListener('click', closeModal));
     document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !modal.hidden) closeModal(); });
