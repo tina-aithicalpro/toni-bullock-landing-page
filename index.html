@@ -30,8 +30,9 @@
   :root {
     --ink: #1B1B19;
     --cream: #FAFAF8;
-    --accent: #6BA5D7;        /* light blue accent (was champagne gold) */
-    --accent-bright: #A9CCE8; /* lighter blue for on-dark contexts */
+    --accent: #5B3FA4;        /* violet-leaning secondary (was #3F49A4 indigo; same luminance ≈ same contrast) */
+    --accent-bright: #B8ACE2; /* lighter violet for on-dark contexts */
+    --accent-dark: #48327F;   /* darker violet for button hover states */
     --emerald: #1B4332;       /* deep emerald, secondary accent */
     /* Back-compat aliases so any stray var(--gold*) still resolves to the accent */
     --gold: var(--accent);
@@ -135,8 +136,15 @@
 
   nav.site-nav .links a:hover { color: var(--gold); }
 
+  /* Scroll-spy active state: accent color + underline (reserve 2px so nothing shifts) */
+  nav.site-nav .links a:not(.btn-solid) { border-bottom: 2px solid transparent; padding-bottom: 2px; }
+  nav.site-nav .links a.active:not(.btn-solid) { color: var(--accent); border-bottom-color: var(--accent); }
+
+  /* Phone number in nav — readable (not uppercased) and consistent with the link row */
+  nav.site-nav .links .nav-phone a { text-transform: none; letter-spacing: 0.01em; font-weight: 600; }
+
   nav.site-nav .links .btn-solid { padding: 0.6rem 1.1rem; color: #FFFFFF; }
-  nav.site-nav .links .btn-solid:hover { color: #FFFFFF; }
+  nav.site-nav .links .btn-solid:hover { background: var(--accent-dark); color: #FFFFFF; }
 
   .menu-toggle {
     display: none;
@@ -219,8 +227,8 @@
   .hero-headline {
     font-family: 'Forum', serif;
     font-weight: 400;
-    font-size: clamp(2.5rem, 5.5vw, 4rem);
-    line-height: 1.05;
+    font-size: clamp(1.9rem, 4vw, 2.9rem);
+    line-height: 1.15;
     letter-spacing: 0.01em;
     color: var(--ink);
     margin-bottom: 1.25rem;
@@ -332,7 +340,7 @@
 
 
   .btn-solid {
-    background: var(--ink);
+    background: var(--accent);
     color: #FFFFFF;
     font-family: 'Inter', sans-serif;
     font-weight: 600;
@@ -345,17 +353,18 @@
     display: inline-block;
     border: none;
     cursor: pointer;
-    transition: filter 0.15s ease;
+    transition: background 0.15s ease, color 0.15s ease;
   }
 
-  .btn-solid:hover { filter: brightness(2.2); }
+  /* Hover deepens to the darker violet — keeps high contrast with white text */
+  .btn-solid:hover { background: var(--accent-dark); color: #FFFFFF; }
 
   .btn-ghost {
-    color: var(--emerald);
+    color: var(--accent);
     font-family: 'Inter', sans-serif;
     font-size: 0.85rem;
     text-decoration: none;
-    border-bottom: 1px solid var(--emerald);
+    border-bottom: 1px solid var(--accent);
     padding-bottom: 3px;
     align-self: center;
     transition: opacity 0.15s ease;
@@ -363,11 +372,11 @@
   .btn-ghost:hover { opacity: 0.6; }
 
   .btn-secondary {
-    color: var(--ink);
+    color: var(--accent);
     font-family: 'Inter', sans-serif;
     font-size: 0.85rem;
     text-decoration: none;
-    border: 1px solid var(--ink);
+    border: 1px solid var(--accent);
     padding: 0.7rem 1.2rem;
     border-radius: 2px;
     display: inline-block;
@@ -454,26 +463,26 @@
 
   .form-submit {
     width: 100%;
-    background: var(--cream);
-    color: var(--ink);
+    background: var(--accent);
+    color: #FFFFFF;
     font-family: 'Inter', sans-serif;
     font-weight: 600;
     font-size: 0.9rem;
     letter-spacing: 0.05em;
     text-transform: none;
-    border: 1px solid var(--ink);
+    border: 1px solid var(--accent);
     border-radius: 2px;
     padding: 0.9rem;
     cursor: pointer;
     margin-top: 0.5rem;
-    transition: background 0.2s ease, color 0.2s ease;
+    transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
   }
 
-  .form-submit:hover { background: var(--ink); color: var(--cream); }
+  .form-submit:hover { background: var(--accent-dark); border-color: var(--accent-dark); color: #FFFFFF; }
 
   .form-note {
-    font-size: 0.75rem;
-    color: rgba(27, 27, 25, 0.55);
+    font-size: 0.9rem;
+    color: rgba(27, 27, 25, 0.68);
     margin-top: 0.75rem;
   }
 
@@ -503,7 +512,7 @@
 
   .field-error {
     color: #C0453F;
-    font-size: 0.78rem;
+    font-size: 0.85rem;
     margin-top: 0.3rem;
     display: none;
   }
@@ -546,73 +555,165 @@
   }
 
   /* CAREER TIMELINE */
-  .timeline-list { list-style: none; margin-top: 2.5rem; max-width: 44rem; }
-
-  .timeline-list li {
-    position: relative;
-    padding: 1.5rem 0 1.5rem 7.5rem;
-    border-top: 1px solid var(--hairline);
+  /* CAREER (combined timeline narrative + credits panel) */
+  .career-layout { display: grid; grid-template-columns: 1fr; gap: 2.5rem; margin-top: 2.5rem; }
+  @media (min-width: 860px) {
+    .career-layout { grid-template-columns: 1.35fr 0.9fr; gap: 3rem; align-items: start; }
   }
 
-  .timeline-list li:last-child { border-bottom: 1px solid var(--hairline); }
-
-  @media (max-width: 560px) {
-    .timeline-list li { padding-left: 0; padding-top: 2.25rem; }
-    .timeline-list h3 { position: static; transform: none; margin-bottom: 0.6rem; }
+  /* Left column: numbered narrative cards (accent left-bar, subtle shadow) */
+  .career-cards { list-style: none; display: flex; flex-direction: column; gap: 1.25rem; }
+  .career-card {
+    display: flex;
+    gap: 1.1rem;
+    background: var(--cream);
+    border: 1px solid var(--hairline);
+    border-left: 3px solid var(--accent);
+    border-radius: 4px;
+    padding: 1.35rem 1.5rem;
+    box-shadow: 0 14px 34px -26px rgba(27, 27, 25, 0.5);
+    transition: transform 0.18s ease, box-shadow 0.18s ease, border-left-width 0.18s ease;
   }
-
-  .timeline-list h3 {
-    position: absolute;
-    top: 0;
-    left: 0;
-    transform: translateY(-50%);
-    width: 6rem;
-    text-align: center;
-    font-family: 'Inter', sans-serif;
-    font-size: 0.95rem;
-    color: var(--gold-bright);
-    background: var(--ink);
+  .career-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 24px 46px -22px rgba(27, 27, 25, 0.55);
+    border-left-width: 6px;
+  }
+  .career-card:hover .career-num { color: var(--emerald); }
+  .career-num {
+    font-family: 'Forum', serif;
+    font-size: 1.15rem;
+    line-height: 1;
+    color: var(--accent);
+    flex: 0 0 auto;
+    min-width: 1.5rem;
+    padding-top: 0.15rem;
+  }
+  .career-year {
     display: inline-block;
-    padding: 0.3rem 0.5rem;
-    border-radius: 2px;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.3rem;
   }
-
-  .timeline-list h4 {
+  .career-card h3 {
     font-family: 'Forum', serif;
     font-weight: 400;
-    font-size: 1.25rem;
+    font-size: 1.2rem;
+    line-height: 1.25;
     margin-bottom: 0.25rem;
   }
+  .career-card p { font-size: 0.9rem; margin: 0; max-width: none; color: rgba(27, 27, 25, 0.7); }
 
-  .timeline-list p { font-size: 0.95rem; margin: 0; max-width: none; }
+  /* Right column: bordered numbered credits panel with one highlighted row */
+  .credits-panel {
+    background: var(--cream);
+    border: 1px solid var(--hairline);
+    border-radius: 4px;
+    padding: 1.5rem;
+    box-shadow: 0 14px 34px -26px rgba(27, 27, 25, 0.5);
+  }
+  @media (min-width: 860px) { .credits-panel { position: sticky; top: 5.5rem; } }
+  .credits-panel-label {
+    display: block;
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink);
+    margin-bottom: 0.5rem;
+  }
+  .credits-rows { list-style: none; counter-reset: credit; }
+  .credits-rows li {
+    counter-increment: credit;
+    display: flex;
+    align-items: baseline;
+    gap: 0.75rem;
+    padding: 0.85rem 0;
+    border-bottom: 1px solid var(--hairline);
+  }
+  .credits-rows li:last-child { border-bottom: none; }
+  .credits-rows li .credit-name { transition: color 0.15s ease; }
+  .credits-rows li:not(.is-highlight):hover .credit-name { color: var(--accent); }
+  .credits-rows li::before {
+    content: counter(credit, decimal-leading-zero);
+    font-family: 'Inter', sans-serif;
+    font-size: 0.75rem;
+    color: rgba(27, 27, 25, 0.45);
+    flex: 0 0 auto;
+    min-width: 1.4rem;
+  }
+  .credit-name { font-family: 'Forum', serif; font-size: 1.05rem; line-height: 1.25; }
+  .credit-role {
+    display: block;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.72rem;
+    letter-spacing: 0.03em;
+    color: rgba(27, 27, 25, 0.55);
+    margin-top: 0.2rem;
+  }
+  /* Highlighted (flagship) row */
+  .credits-rows li.is-highlight {
+    background: var(--ink);
+    border-radius: 4px;
+    border-bottom: none;
+    padding: 0.85rem 0.75rem;
+  }
+  .credits-rows li.is-highlight::before { color: var(--accent-bright); }
+  .credits-rows li.is-highlight .credit-name { color: #FFFFFF; }
+  .credits-rows li.is-highlight .credit-role { color: var(--accent-bright); }
 
   /* MEDIA / PRESS */
-  .media-list { list-style: none; margin-top: 2.5rem; max-width: 44rem; }
+  .media-list { list-style: none; margin-top: 2.5rem; max-width: 56rem; }
 
   .media-list li { border-top: 1px solid var(--hairline); }
   .media-list li:last-child { border-bottom: 1px solid var(--hairline); }
 
   .media-list a {
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     gap: 1.5rem;
-    padding: 1.5rem 0;
+    padding: 1.4rem 1rem;
+    border-radius: 8px;
     text-decoration: none;
     color: var(--ink);
+    transition: background 0.15s ease;
   }
 
-  .media-list a:hover .media-title { color: var(--gold); }
-  .media-list a:hover .media-icon { color: var(--gold); }
+  .media-list a:hover { background: rgba(91, 63, 164, 0.055); }
+  .media-list a:hover .media-title { color: var(--accent); }
+  .media-list a:hover .media-icon { color: var(--accent); }
 
+  /* Press thumbnail; broken/not-yet-added files remove themselves via onerror so the row stays clean */
+  .media-thumb {
+    flex: 0 0 auto;
+    width: 5.5rem;
+    height: 5.5rem;
+    object-fit: cover;
+    border-radius: 6px;
+    border: 1px solid var(--hairline);
+    background: rgba(27, 27, 25, 0.04);
+  }
+  @media (max-width: 560px) { .media-thumb { width: 4rem; height: 4rem; } }
+
+  .media-year:empty { display: none; }
   .media-year {
-    flex: 0 0 4.5rem;
+    flex: 0 0 3rem;
+    align-self: center;
     font-family: 'Inter', sans-serif;
-    font-size: 0.95rem;
-    color: var(--gold);
-    padding-top: 0.15rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    color: var(--accent);
   }
 
-  .media-body { flex: 1; }
+  .media-body { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+  /* Type reads as a small label above the title; description sits below */
+  .media-body .media-type { order: -1; margin-bottom: 0.3rem; }
 
   .media-title {
     display: block;
@@ -634,6 +735,17 @@
     color: rgba(27, 27, 25, 0.55);
   }
 
+  /* Short description shown under each media item so rows aren't just a title */
+  .media-desc {
+    display: block;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.88rem;
+    line-height: 1.55;
+    color: rgba(27, 27, 25, 0.7);
+    margin-top: 0.4rem;
+    max-width: 44rem;
+  }
+
   .media-icon {
     flex: 0 0 auto;
     width: 1rem;
@@ -645,13 +757,17 @@
 
   .media-sublabel { margin-top: 3rem; }
 
-  /* Podcast entry: same row rhythm as ".media-list a", but holds multiple platform links */
+  /* Podcast entry: same row rhythm as ".media-list a" (platform links now live in the modal) */
   .media-entry {
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     gap: 1.5rem;
-    padding: 1.5rem 0;
+    padding: 1.4rem 1rem;
+    border-radius: 8px;
+    transition: background 0.15s ease;
   }
+  .media-entry:hover { background: rgba(91, 63, 164, 0.055); }
+  .media-body-link { cursor: pointer; }
   .media-platforms {
     flex: 0 0 auto;
     display: flex;
@@ -723,35 +839,6 @@
   a.media-body-link:hover .media-title { color: var(--gold); }
 
   /* CREDITS ROLL */
-  .credits-band { background: var(--ink); padding: 3.5rem 1.5rem; text-align: center; }
-  .credits-list { max-width: 30rem; margin: 1.5rem auto 0; list-style: none; }
-
-  .credits-list li {
-    font-family: 'Inter', sans-serif;
-    color: var(--gold-bright);
-    font-size: 1rem;
-    padding: 0.55rem 0;
-    border-bottom: 1px solid rgba(198, 166, 100, 0.18);
-    animation: credit-in 0.6s ease both;
-  }
-
-  .credits-list li:nth-child(1) { animation-delay: 0.05s; }
-  .credits-list li:nth-child(2) { animation-delay: 0.15s; }
-  .credits-list li:nth-child(3) { animation-delay: 0.25s; }
-  .credits-list li:nth-child(4) { animation-delay: 0.35s; }
-  .credits-list li:nth-child(5) { animation-delay: 0.45s; }
-  .credits-list li:nth-child(6) { animation-delay: 0.55s; }
-
-  @keyframes credit-in {
-    from { opacity: 0; transform: translateY(14px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  .credits-list li:last-child { border-bottom: none; }
-
-  @media (prefers-reduced-motion: reduce) {
-    .credits-list li { animation: none; opacity: 1; transform: none; }
-  }
 
   /* BUSINESS: 2-PANEL TABS */
   .biz-tabs { display: flex; gap: 0.75rem; margin: 2rem 0 1.5rem; flex-wrap: wrap; }
@@ -789,7 +876,19 @@
   /* Ventures: two full-width cards side-by-side */
   .ventures-grid { display: grid; grid-template-columns: 1fr; gap: 1.5rem; margin-top: 2rem; }
   @media (min-width: 760px) { .ventures-grid { grid-template-columns: 1fr 1fr; gap: 2rem; } }
-  .venture-card { border: 1px solid var(--hairline); border-radius: 4px; padding: 2rem; background: var(--cream); }
+  .venture-card {
+    border: 1px solid var(--hairline);
+    border-radius: 4px;
+    padding: 2rem;
+    background: var(--cream);
+    box-shadow: 0 14px 34px -26px rgba(27, 27, 25, 0.5);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  }
+  .venture-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 26px 50px -22px rgba(27, 27, 25, 0.55);
+    border-color: var(--accent);
+  }
   .venture-card h3 { font-family: 'Forum', serif; font-weight: 400; font-size: 1.5rem; margin-bottom: 0.4rem; }
   .venture-card .tagline { font-style: italic; color: var(--ink); margin-bottom: 0.9rem; }
   .venture-card ul { padding-left: 1.1rem; margin-bottom: 1rem; }
@@ -813,6 +912,14 @@
 
   .path h3 { font-family: 'Forum', serif; font-weight: 400; font-size: 1.3rem; margin-bottom: 0.5rem; }
   .path p { font-size: 0.95rem; }
+  .path-link {
+    display: inline-flex; align-items: center; gap: 0.4rem; margin-top: 0.7rem;
+    font-family: 'Inter', sans-serif; font-weight: 600; font-size: 0.82rem; letter-spacing: 0.03em;
+    color: var(--accent); text-decoration: none;
+  }
+  .path-link svg { width: 0.9rem; height: 0.9rem; transition: transform 0.15s ease; }
+  .path-link:hover { color: var(--accent-dark); }
+  .path-link:hover svg { transform: translateX(3px); }
 
   /* QUOTE BANNER (standalone, second quote) */
   .quote-banner {
@@ -844,12 +951,27 @@
   .contact-card {
     background: var(--cream);
     border: 1px solid var(--hairline);
+    border-radius: 4px;
     padding: 2rem;
     max-width: 30rem;
+    box-shadow: 0 14px 34px -26px rgba(27, 27, 25, 0.5);
   }
 
   .contact-card h3 { font-family: 'Forum', serif; font-weight: 400; font-size: 1.4rem; margin-bottom: 0.5rem; }
   .contact-card > p { font-size: 0.95rem; margin-bottom: 1.25rem; max-width: none; }
+  /* Name on the left, phone number on the right, sharing one baseline row */
+  .contact-card-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 1.25rem;
+  }
+  .contact-card-head h3 { margin-bottom: 0; }
+  .contact-phone { font-size: 0.95rem; margin-bottom: 0; }
+  .contact-phone a { color: var(--ink); text-decoration: none; font-weight: 600; }
+  .contact-phone a:hover { color: var(--accent); }
 
   /* Left-column intro + secondary "Follow along" contact path (reuses footer links) */
   .contact-intro-copy { margin-top: 1rem; max-width: 32rem; }
@@ -944,18 +1066,18 @@
     width: auto;
     max-width: 150px;
     object-fit: contain;
-    filter: grayscale(100%);
-    opacity: 0.62;
-    transition: filter 0.3s ease, opacity 0.3s ease;
+    filter: none;
+    opacity: 1;
+    transition: transform 0.3s ease;
   }
 
   .logo-featured img:hover,
-  .logo-featured img:focus-visible { filter: grayscale(0); opacity: 1; }
+  .logo-featured img:focus-visible { transform: scale(1.06); }
 
-  /* Light-toned logos (e.g. Hulu, Bravo): darken at rest so they read on cream */
+  /* Full-color logos throughout, at rest and on hover */
   .logo-featured img.logo-adjust {
-    opacity: 0.9;
-    filter: grayscale(100%) brightness(0.55) contrast(1.15);
+    opacity: 1;
+    filter: none;
   }
 
   .logo-featured img.logo-adjust:hover,
@@ -976,7 +1098,7 @@
     align-items: center;
     gap: 3.5rem;
     width: max-content;
-    animation: logo-scroll 64s linear infinite;
+    animation: logo-scroll 75s linear infinite;
   }
 
   .logo-marquee:hover .logo-track,
@@ -989,13 +1111,13 @@
     width: auto;
     max-width: 128px;
     object-fit: contain;
-    filter: grayscale(100%);
-    opacity: 0.55;
-    transition: filter 0.3s ease, opacity 0.3s ease;
+    filter: none;
+    opacity: 1;
+    transition: transform 0.3s ease;
   }
 
   .logo-track img:hover,
-  .logo-track img:focus-visible { filter: grayscale(0); opacity: 1; }
+  .logo-track img:focus-visible { transform: scale(1.06); }
 
   @keyframes logo-scroll {
     from { transform: translateX(0); }
@@ -1041,11 +1163,8 @@
     .how-layout .paths { grid-template-columns: 1fr; gap: 1.5rem; margin-top: 2rem; }
   }
 
-  .media-layout { display: grid; grid-template-columns: 1fr; gap: 2.5rem; }
-  @media (min-width: 900px) {
-    .media-layout { grid-template-columns: 1.5fr 0.85fr; gap: 3.5rem; align-items: start; }
-    .media-figure { position: sticky; top: 5.5rem; }
-  }
+  /* Media is now a single full-width column (portrait image removed) */
+  .media-layout { display: block; }
 
   .contact-layout { display: grid; grid-template-columns: 1fr; gap: 2.5rem; }
   @media (min-width: 820px) {
@@ -1078,15 +1197,33 @@
     font-size: 1.7rem; line-height: 1; color: rgba(27, 27, 25, 0.55); padding: 0.25rem 0.4rem;
   }
   .media-modal-close:hover { color: var(--accent); }
-  .media-modal-type { display: block; font-family: 'Inter', sans-serif; font-size: 0.7rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--emerald); margin-bottom: 0.6rem; }
-  .media-modal-title { font-family: 'Forum', serif; font-weight: 400; font-size: 1.6rem; line-height: 1.25; margin-bottom: 0.9rem; }
-  .media-modal-desc { font-size: 0.95rem; color: rgba(27, 27, 25, 0.8); margin-bottom: 1.5rem; }
+  .media-modal-outlet { display: block; font-family: 'Inter', sans-serif; font-size: 0.72rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.35rem; }
+  .media-modal-outlet:empty { display: none; }
+  .media-modal-title { font-family: 'Forum', serif; font-weight: 400; font-size: 1.5rem; line-height: 1.25; margin-bottom: 0.7rem; }
+  .media-modal-meta { display: flex; align-items: center; flex-wrap: wrap; gap: 0.7rem; margin-bottom: 1rem; }
+  .media-modal-badge {
+    display: inline-block; font-family: 'Inter', sans-serif; font-size: 0.65rem; font-weight: 600;
+    letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent);
+    background: rgba(91, 63, 164, 0.1); border: 1px solid rgba(91, 63, 164, 0.28);
+    border-radius: 999px; padding: 0.25rem 0.7rem;
+  }
+  .media-modal-date { font-family: 'Inter', sans-serif; font-size: 0.82rem; color: rgba(27, 27, 25, 0.6); }
+  .media-modal-date:empty { display: none; }
+  .media-modal-desc { font-size: 0.95rem; line-height: 1.6; color: rgba(27, 27, 25, 0.8); margin-bottom: 1.5rem; }
   .media-modal-link {
     display: inline-flex; align-items: center; gap: 0.5rem; font-family: 'Inter', sans-serif; font-weight: 600;
-    font-size: 0.85rem; letter-spacing: 0.03em; text-decoration: none; color: var(--ink);
-    border: 1px solid var(--ink); border-radius: 2px; padding: 0.7rem 1.2rem; transition: background 0.2s ease, color 0.2s ease;
+    font-size: 0.85rem; letter-spacing: 0.03em; text-decoration: none; color: #FFFFFF;
+    background: var(--accent); border: 1px solid var(--accent); border-radius: 2px; padding: 0.7rem 1.2rem; transition: background 0.2s ease, border-color 0.2s ease;
   }
-  .media-modal-link:hover { background: var(--ink); color: var(--cream); }
+  .media-modal-link:hover { background: var(--accent-dark); border-color: var(--accent-dark); color: #FFFFFF; }
+  /* Plain text link (not a button) — used for the podcast's Spotify link */
+  .media-modal-plainlink {
+    display: inline-flex; align-items: center; gap: 0.4rem;
+    font-family: 'Inter', sans-serif; font-weight: 600; font-size: 0.9rem;
+    color: var(--accent); text-decoration: underline; text-underline-offset: 3px;
+  }
+  .media-modal-plainlink:hover { color: var(--accent-dark); }
+  .media-modal-plainlink svg { width: 0.85rem; height: 0.85rem; }
   /* Media area inside the modal: holds either a larger image or an embedded video player */
   .media-modal-media { margin-bottom: 1.25rem; }
   .media-modal-media:empty { display: none; }
@@ -1096,10 +1233,15 @@
   /* Links row: supports one button (article/video) or several platform buttons (podcast) */
   .media-modal-links { display: flex; flex-wrap: wrap; gap: 0.5rem; }
   .media-modal-links:empty { display: none; }
-  @media (max-width: 560px) {
-    /* Same layout, scaled to fit the viewport width — not a full-screen mobile-only design */
-    .media-modal { padding: 0.9rem; }
-    .media-modal-dialog { padding: 1.6rem 1.25rem; max-height: calc(100vh - 1.8rem); }
+  @media (max-width: 600px) {
+    /* Full-width bottom sheet on small screens */
+    .media-modal { padding: 0; align-items: flex-end; }
+    .media-modal-dialog {
+      max-width: 100%; width: 100%;
+      border-radius: 14px 14px 0 0;
+      max-height: 92vh;
+      padding: 1.6rem 1.25rem 2rem;
+    }
     .media-modal-title { font-size: 1.35rem; }
   }
 </style>
@@ -1156,7 +1298,7 @@
         { "@type": "Question", "name": "Who is Toni Bullock?", "acceptedAnswer": { "@type": "Answer", "text": "Toni Bullock is a National Emmy Award-winning television producer whose credits include Red Table Talk, Black Women Own the Conversation, Peace of Mind with Taraji, The Amazing Race, Rhythm and Flow, and Sherri. She is also the founder of Callsheets 2 Cocktails and Effortlessly Coordinated." } },
         { "@type": "Question", "name": "What is Callsheets 2 Cocktails?", "acceptedAnswer": { "@type": "Answer", "text": "Callsheets 2 Cocktails (C2C) is a professional community Toni Bullock founded in 2017 to connect, educate, and empower women in media through panels and networking events." } },
         { "@type": "Question", "name": "What is Effortlessly Coordinated?", "acceptedAnswer": { "@type": "Answer", "text": "Effortlessly Coordinated is Toni Bullock's Brooklyn, NY-based event coordination team, specializing in weddings, proposals, and corporate events." } },
-        { "@type": "Question", "name": "Does Effortlessly Coordinated serve Brooklyn weddings?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. Effortlessly Coordinated is based in Brooklyn, NY and plans weddings there, along with proposals and corporate events." } }
+        { "@type": "Question", "name": "Can Effortlessly Coordinated plan my Brooklyn wedding?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. Effortlessly Coordinated is based in Brooklyn, NY and plans weddings there, along with proposals and corporate events." } }
       ]
     }
   ]
@@ -1173,6 +1315,7 @@
       <li><a href="#timeline">Career</a></li>
       <li><a href="#media">Media</a></li>
       <li><a href="#ventures">Ventures</a></li>
+      <li class="nav-phone"><a href="tel:+17184906728">(718) 490-6728</a></li>
       <li><a href="#contact" class="btn-solid">Contact</a></li>
     </ul>
     <button class="menu-toggle" id="menu-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="nav-links">
@@ -1185,12 +1328,12 @@
   <div class="wrap">
     <div class="hero-grid">
       <div class="hero-left">
-        <!-- Eyebrow: real role (confirm wording) -->
-        <p class="hero-eyebrow">Emmy-Winning TV Producer</p>
-        <!-- Headline built from existing site copy; second line italic -->
-        <h1 class="hero-headline">Toni Bullock,<br><em>Producer &amp; Founder</em></h1>
-        <!-- Subtext: action-oriented, specific, no filler adjectives -->
-        <p class="hero-sub">Hire her to produce your show, plan your wedding, or run your event, from first callsheet to final toast. One producer, one standard, start to finish.</p>
+        <!-- Eyebrow: name label for the personal brand -->
+        <p class="hero-eyebrow">Toni Bullock</p>
+        <!-- Headline: role line -->
+        <h1 class="hero-headline">Emmy Award-Winning Television Producer &bull; Founder &bull; Speaker &bull; Advocate for Women in Media</h1>
+        <!-- Subheadline -->
+        <p class="hero-sub">From producing Emmy Award-winning television to founding Callsheets 2 Cocktails, Toni Bullock creates compelling stories, builds meaningful communities and opens doors for the next generation of women in media.</p>
         <div class="hero-actions">
           <a href="#contact" class="btn-solid hero-cta">Book your consultation
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg>
@@ -1313,7 +1456,7 @@
 <section class="pad" id="events">
   <div class="wrap">
     <span class="field-label">Events</span>
-    <h2 style="font-size: clamp(1.8rem, 4vw, 2.4rem); margin-bottom: 0.5rem;">Weddings and celebrations.</h2>
+    <h2 style="font-size: clamp(1.8rem, 4vw, 2.4rem); margin-bottom: 0.5rem;">Weddings and celebrations</h2>
     <p>Proposals, ceremonies, and receptions, run to broadcast standard from first callsheet to final toast.</p>
     <div class="event-grid">
       <div class="event-card">
@@ -1352,7 +1495,7 @@
         </blockquote>
       </div>
       <figure class="section-figure">
-        <img src="images/toni-bullock-about.webp" alt="Toni Bullock standing with her arms crossed in a black blazer against a warm amber studio backdrop" width="780" height="975" loading="lazy" decoding="async">
+        <img src="images/toni-bullock-about-image.jpg" alt="Portrait of Toni Bullock, television producer" width="1366" height="2048" loading="lazy" decoding="async">
       </figure>
     </div>
   </div>
@@ -1360,192 +1503,57 @@
 
 <section class="pad" id="timeline">
   <div class="wrap">
-    <h2 class="field-label">Career timeline</h2>
-    <ul class="timeline-list">
-      <li>
-        <h3>2017</h3>
-        <div>
-          <h4>Founded Callsheets 2 Cocktails</h4>
-          <p>Launched C2C to connect, educate, and empower women in media.</p>
-        </div>
-      </li>
-      <li>
-        <h3>2019</h3>
-        <div>
-          <h4>Rhythm and Flow &amp; Red Table Talk</h4>
-          <p>Field Producer on Rhythm and Flow; producer on Red Table Talk.</p>
-        </div>
-      </li>
-      <li>
-        <h3>2020</h3>
-        <div>
-          <h4>National Emmy</h4>
-          <p>Producer on Black Women Own the Conversation, recognized as an Emmy-winning production.</p>
-        </div>
-      </li>
-      <li>
-        <h3>2024&ndash;25</h3>
-        <div>
-          <h4>Senior Producer, Sherri</h4>
-          <p>55 episodes as Senior Producer on the nationally syndicated talk show.</p>
-        </div>
-      </li>
-    </ul>
-  </div>
-</section>
-
-<div class="credits-band" id="credits">
-  <h2 class="field-label on-dark centered">Credits</h2>
-  <ul class="credits-list" id="credits-list">
-    <li>Red Table Talk</li>
-    <li>Black Women Own the Conversation</li>
-    <li>Peace of Mind with Taraji (Supervising Producer)</li>
-    <li>The Amazing Race</li>
-    <li>Rhythm and Flow (Field Producer)</li>
-    <li>Sherri (Senior Producer, 2024&ndash;2025)</li>
-  </ul>
-</div>
-
-<section class="pad" id="media">
-  <div class="wrap">
-    <div class="media-layout">
-    <div class="media-copy">
-    <h2 class="field-label">Media</h2>
-    <ul class="media-list">
-      <li class="media-podcast">
-        <div class="media-entry" data-img="images/inside-diverse-cinema-ep105.jpeg" data-desc="An interview with Emmy Award-Winning producer Toni L. Bullock (&ldquo;Black Women Own the Conversation&rdquo;) exploring the creative and professional realities of unscripted television production. Covers producing and casting, the impact of her Emmy win, the producing ecosystems of Los Angeles and New York, and the importance of networking and professional reinvention in an evolving entertainment industry.">
-          <span class="media-year">2026</span>
-          <a class="media-body media-body-link" href="#podcast">
-            <span class="media-title">Inside Diverse Cinema, Episode 105: Emmy&reg; Award-Winning Producer Toni Bullock on Unscripted Television, Networking &amp; the Future of Storytelling</span>
-            <span class="media-type">Podcast</span>
-          </a>
-          <span class="media-platforms">
-            <a href="https://open.spotify.com/episode/4gnOIrYcnaDJdZo4SapNe1" target="_blank" rel="noopener noreferrer">Spotify</a>
-            <a href="https://www.iheart.com/podcast/269-inside-diverse-cinema-331889505/episode/emmy-award-winning-producer-toni-bullock-on-339799226/" target="_blank" rel="noopener noreferrer">iHeartRadio</a>
-            <a href="https://music.amazon.com/podcasts/0af1ddf9-e1fb-454a-b3f9-6af632cfdbf8/episodes/c38559ea-c3e4-48dd-a2a0-3b8d325747bb/inside-diverse-cinema-emmy%C2%AE-award-winning-producer-toni-bullock-on-unscripted-television-networking-the-future-of-storytelling" target="_blank" rel="noopener noreferrer">Amazon Music</a>
-            <a href="https://www.audible.com/podcast/ITEM_NAME/B0H7X519LQ" target="_blank" rel="noopener noreferrer">Audible</a>
-          </span>
-        </div>
-      </li>
-      <li>
-        <a href="https://influentialwomen.com/connect/toni-bullock" target="_blank" rel="noopener noreferrer" data-desc="An Influential Women feature profiling Toni Bullock and her career as a National Emmy Award-winning television producer.">
-          <span class="media-year">2026</span>
-          <span class="media-body">
-            <span class="media-title">Influential Women feature</span>
-            <span class="media-type">Article</span>
-          </span>
-          <svg class="media-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="M10 14L21 3"/></svg>
-        </a>
-      </li>      <li>
-        <a href="https://web.archive.org/web/20251207005939/https://boldjourney.com/meet-toni-bullock/" target="_blank" rel="noopener noreferrer" data-desc="A BOLD Journey profile introducing Toni Bullock and her path as a television producer and founder.">
-          <span class="media-year">2025</span>
-          <span class="media-body">
-            <span class="media-title">BOLD Journey: Meet Toni Bullock</span>
-            <span class="media-type">Article</span>
-          </span>
-          <svg class="media-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="M10 14L21 3"/></svg>
-        </a>
-      </li>
-      <li>
-        <a href="https://www.stage32.com/blog/3627" target="_blank" rel="noopener noreferrer" data-desc="A Stage 32 blog feature on Toni Bullock and her work in unscripted television production.">
-          <span class="media-year">2024</span>
-          <span class="media-body">
-            <span class="media-title">Stage 32 blog feature</span>
-            <span class="media-type">Article</span>
-          </span>
-          <svg class="media-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="M10 14L21 3"/></svg>
-        </a>
-      </li>
-      <li>
-        <a href="https://www.youtube.com/watch?v=MJoRexToOkw" target="_blank" rel="noopener noreferrer" data-desc="A Callsheets 2 Cocktails Black History Month panel in which Black television executives share career advice with the next generation of media professionals.">
-          <span class="media-year">2023</span>
-          <span class="media-body">
-            <span class="media-title">C2C Black History Month: Black TV Executives Give Advice to Next Generation</span>
-            <span class="media-type">Video</span>
-          </span>
-          <svg class="media-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="M10 14L21 3"/></svg>
-        </a>
-      </li>
-      <li>
-        <a href="https://heragenda.com/p/toni-bullock/" target="_blank" rel="noopener noreferrer" data-desc="An Her Agenda profile on Toni Bullock, covering her work as a television producer and founder of Callsheets 2 Cocktails.">
-          <span class="media-year">2022</span>
-          <span class="media-body">
-            <span class="media-title">Her Agenda profile</span>
-            <span class="media-type">Article</span>
-          </span>
-          <svg class="media-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="M10 14L21 3"/></svg>
-        </a>
-      </li>
-      <li>
-        <a href="https://open.spotify.com/episode/3WAC663eNC4CC4zHYLEEaA" target="_blank" rel="noopener noreferrer" data-desc="A 2021 podcast interview with Toni Bullock on her career in television production.">
-          <span class="media-year">2021</span>
-          <span class="media-body">
-            <span class="media-title">Podcast interview</span>
-            <span class="media-type">Podcast</span>
-          </span>
-          <svg class="media-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="M10 14L21 3"/></svg>
-        </a>
-      </li>
-      <li>
-        <a href="https://web.archive.org/web/20221002121547/http://voyagela.com/interview/meet-toni-bullock-tv-producer-creator-callsheets-2-cocktails/" target="_blank" rel="noopener noreferrer" data-desc="A Voyage LA interview: Meet Toni Bullock, TV producer and creator of Callsheets 2 Cocktails.">
-          <span class="media-year">2019</span>
-          <span class="media-body">
-            <span class="media-title">Voyage LA: Meet Toni Bullock, TV Producer + Creator, Callsheets 2 Cocktails</span>
-            <span class="media-type">Article</span>
-          </span>
-          <svg class="media-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="M10 14L21 3"/></svg>
-        </a>
-      </li>
-    </ul>
-
-    <!-- TODO: confirm publish year with client, then move into main chronological list above -->
-    <h3 class="field-label media-sublabel">Additional features</h3>
-    <ul class="media-list">
-      <li>
-        <a href="https://www.youtube.com/watch?v=ExgU-QCI6aI" target="_blank" rel="noopener noreferrer" data-desc="A virtual interview with Toni Bullock for the Had I Known series, on her career and experience in the entertainment industry.">
-          <span class="media-year"></span>
-          <span class="media-body">
-            <span class="media-title">Had I Known virtual interview</span>
-            <span class="media-type">Video</span>
-          </span>
-          <svg class="media-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="M10 14L21 3"/></svg>
-        </a>
-      </li>
-      <li>
-        <a href="https://www.hamilton.edu/news/stories/opportunity-program-podcast-aaron-ray" target="_blank" rel="noopener noreferrer" data-desc="A Hamilton College Opportunity Program podcast episode featuring Toni Bullock.">
-          <span class="media-year"></span>
-          <span class="media-body">
-            <span class="media-title">Hamilton College Opportunity Program podcast</span>
-            <span class="media-type">Podcast</span>
-          </span>
-          <svg class="media-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="M10 14L21 3"/></svg>
-        </a>
-      </li>
-      <li>
-        <a href="https://ebonigrayportfolio.wixsite.com/mysite/post/toni-bullock-on-her-life-in-the-entertainment-industry-and-the-path-to-her-success" target="_blank" rel="noopener noreferrer" data-desc="An Her Agenda piece by Eboni Gray on Toni Bullock&rsquo;s life in the entertainment industry and the path to her success.">
-          <span class="media-year"></span>
-          <span class="media-body">
-            <span class="media-title">Her Agenda / Eboni Gray: Toni Bullock on her life in the entertainment industry and the path to her success</span>
-            <span class="media-type">Article</span>
-          </span>
-          <svg class="media-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="M10 14L21 3"/></svg>
-        </a>
-      </li>
-      <li>
-        <a href="https://www.marvelwood.org/news/community-spotlight-bullock-toni" target="_blank" rel="noopener noreferrer" data-desc="A Marvelwood community spotlight featuring Toni Bullock.">
-          <span class="media-year"></span>
-          <span class="media-body">
-            <span class="media-title">Marvelwood community spotlight</span>
-            <span class="media-type">Article</span>
-          </span>
-          <svg class="media-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="M10 14L21 3"/></svg>
-        </a>
-      </li>
-    </ul>
-    </div>
-    <figure class="section-figure media-figure">
-      <img src="images/toni-bullock-press.webp" alt="Toni Bullock in a white shirt with a black leather jacket over one shoulder, the Manhattan Bridge behind her in DUMBO, Brooklyn" width="780" height="1169" loading="lazy" decoding="async">
-    </figure>
+    <h2 class="field-label">Career</h2>
+    <div class="career-layout">
+      <!-- Left: numbered narrative cards (from the former Career timeline) -->
+      <ol class="career-cards">
+        <li class="career-card">
+          <span class="career-num">01</span>
+          <div>
+            <span class="career-year">2017</span>
+            <h3>Founded Callsheets 2 Cocktails</h3>
+            <p>Launched C2C to connect, educate, and empower women in media.</p>
+          </div>
+        </li>
+        <li class="career-card">
+          <span class="career-num">02</span>
+          <div>
+            <span class="career-year">2019</span>
+            <h3>Rhythm and Flow &amp; Red Table Talk</h3>
+            <p>Field Producer on Rhythm and Flow; producer on Red Table Talk.</p>
+          </div>
+        </li>
+        <li class="career-card">
+          <span class="career-num">03</span>
+          <div>
+            <span class="career-year">2020</span>
+            <h3>National Emmy</h3>
+            <p>Producer on Black Women Own the Conversation, recognized as an Emmy-winning production.</p>
+          </div>
+        </li>
+        <li class="career-card">
+          <span class="career-num">04</span>
+          <div>
+            <span class="career-year">2024&ndash;25</span>
+            <h3>Senior Producer, Sherri</h3>
+            <p>55 episodes as Senior Producer on the nationally syndicated talk show.</p>
+          </div>
+        </li>
+      </ol>
+      <!-- Right: numbered credits panel. Rows that only restate a timeline entry with the
+           same role (Rhythm and Flow / Sherri) are dropped; kept credits add role detail
+           or aren't in the timeline. Emmy-winning title is the highlighted row. -->
+      <aside class="credits-panel" id="credits" aria-label="Selected producer credits">
+        <span class="credits-panel-label">Selected Credits</span>
+        <ol class="credits-rows">
+          <li class="is-highlight">
+            <span class="credit-name">Black Women Own the Conversation<span class="credit-role">Producer &middot; National Emmy winner</span></span>
+          </li>
+          <li><span class="credit-name">Red Table Talk</span></li>
+          <li><span class="credit-name">Peace of Mind with Taraji<span class="credit-role">Supervising Producer</span></span></li>
+          <li><span class="credit-name">The Amazing Race</span></li>
+        </ol>
+      </aside>
     </div>
   </div>
 </section>
@@ -1553,7 +1561,7 @@
 <section class="pad" id="podcast">
   <div class="wrap">
     <span class="field-label">Featured podcast</span>
-    <h2 style="font-size: clamp(1.8rem, 4vw, 2.4rem); margin-bottom: 0.5rem;">On the mic: Inside Diverse Cinema.</h2>
+    <h2 style="font-size: clamp(1.8rem, 4vw, 2.4rem); margin-bottom: 0.5rem;">On the mic: Inside Diverse Cinema</h2>
     <div class="podcast-feature">
       <div>
         <a class="podcast-thumb-link" href="https://open.spotify.com/episode/4gnOIrYcnaDJdZo4SapNe1" target="_blank" rel="noopener noreferrer" aria-label="Play Inside Diverse Cinema Episode 105 with Toni Bullock">
@@ -1575,10 +1583,148 @@
   </div>
 </section>
 
+<section class="pad" id="media">
+  <div class="wrap">
+    <div class="media-layout">
+    <div class="media-copy">
+    <h2 class="field-label">Media</h2>
+    <ul class="media-list">
+      <li class="media-podcast">
+        <div class="media-entry" data-outlet="Inside Diverse Cinema" data-date="July 28, 2026 &middot; 51 min" data-img="images/inside-diverse-cinema-ep105.jpeg" data-desc="An interview with Emmy Award-Winning producer Toni L. Bullock (&ldquo;Black Women Own the Conversation&rdquo;) exploring the creative and professional realities of unscripted television production. Covers producing and casting, the impact of her Emmy win, the producing ecosystems of Los Angeles and New York, and the importance of networking and professional reinvention in an evolving entertainment industry.">
+          <span class="media-year">2026</span>          <a class="media-body media-body-link" href="#podcast">
+            <span class="media-title">Inside Diverse Cinema, Episode 105: Emmy&reg; Award-Winning Producer Toni Bullock on Unscripted Television, Networking &amp; the Future of Storytelling</span>
+            <span class="media-type">Podcast</span>
+            <span class="media-desc">On unscripted TV, her Emmy win, and networking.</span>
+          </a>
+          <span class="media-platforms" hidden>
+            <a href="https://open.spotify.com/episode/4gnOIrYcnaDJdZo4SapNe1" target="_blank" rel="noopener noreferrer">Listen on Spotify</a>
+          </span>
+        </div>
+      </li>
+      <li>
+        <a href="https://influentialwomen.com/connect/toni-bullock" target="_blank" rel="noopener noreferrer" data-outlet="Influential Women" data-date="2026" data-desc="Influential Women profiled Toni&rsquo;s dual career: her production background out of Hamilton College and Syracuse&rsquo;s Newhouse School, her move into event coordination with Effortlessly Coordinated, and Callsheets 2 Cocktails&rsquo; growth into events across New York, Los Angeles, Atlanta, and Bali. The piece highlights her focus on operational execution over design, and her advice to young women to own their expertise and build authentic relationships.">
+          <span class="media-year">2026</span>          <span class="media-body">
+            <span class="media-title">Influential Women feature</span>
+            <span class="media-type">Article</span>
+            <span class="media-desc">A profile of her production and event-coordination career.</span>
+          </span>
+          <svg class="media-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="M10 14L21 3"/></svg>
+        </a>
+      </li>      <li>
+        <a href="https://web.archive.org/web/20251207005939/https://boldjourney.com/meet-toni-bullock/" target="_blank" rel="noopener noreferrer" data-outlet="Bold Journey" data-date="2025" data-desc="Bold Journey featured Toni&rsquo;s path building two ventures &mdash; Callsheets 2 Cocktails and Effortlessly Coordinated &mdash; off the relationships from her Emmy-winning unscripted TV career. She spoke about treating career setbacks as redirection rather than failure, and about launching both businesses without waiting for outside validation.">
+          <span class="media-year">2025</span>          <span class="media-body">
+            <span class="media-title">BOLD Journey: Meet Toni Bullock</span>
+            <span class="media-type">Article</span>
+            <span class="media-desc">On building two ventures from her Emmy-winning TV career.</span>
+          </span>
+          <svg class="media-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="M10 14L21 3"/></svg>
+        </a>
+      </li>
+      <li>
+        <a href="https://www.stage32.com/blog/3627" target="_blank" rel="noopener noreferrer" data-outlet="Stage 32" data-date="2024" data-desc="Stage 32 announced Toni as one of its executives available for pilot script feedback, profiling her decade of unscripted development and casting work across Netflix, Bravo, CBS, and OWN. The announcement credits her with producing the Emmy-winning Black Women OWN the Conversation, alongside Red Table Talk, The Amazing Race, and Top Chef.">
+          <span class="media-year">2024</span>          <span class="media-body">
+            <span class="media-title">Stage 32 blog feature</span>
+            <span class="media-type">Article</span>
+            <span class="media-desc">Named an executive open to giving pilot script feedback.</span>
+          </span>
+          <svg class="media-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="M10 14L21 3"/></svg>
+        </a>
+      </li>
+      <li>
+        <a href="https://www.youtube.com/watch?v=MJoRexToOkw" target="_blank" rel="noopener noreferrer" data-outlet="Callsheets 2 Cocktails" data-date="2023" data-desc="A Callsheets 2 Cocktails Black History Month panel in which Black television executives share career advice with the next generation of media professionals.">
+          <span class="media-year">2023</span>          <span class="media-body">
+            <span class="media-title">C2C Black History Month: Black TV Executives Give Advice to Next Generation</span>
+            <span class="media-type">Video</span>
+            <span class="media-desc">Black TV executives share advice with the next generation.</span>
+          </span>
+          <svg class="media-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="M10 14L21 3"/></svg>
+        </a>
+      </li>
+      <li>
+        <a href="https://heragenda.com/p/toni-bullock/" target="_blank" rel="noopener noreferrer" data-outlet="Her Agenda" data-date="2022" data-desc="Her Agenda profiled Toni&rsquo;s unscripted development work, along with earlier freelance producing credits including Peace of Mind with Taraji as supervising producer. She discussed the challenges of being a woman of color in entertainment and how Callsheets 2 Cocktails, founded in 2017, grew into a low-barrier community of mixers and educational events across Los Angeles and New York.">
+          <span class="media-year">2022</span>          <span class="media-body">
+            <span class="media-title">Her Agenda profile</span>
+            <span class="media-type">Article</span>
+            <span class="media-desc">On unscripted development and founding Callsheets 2 Cocktails.</span>
+          </span>
+          <svg class="media-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="M10 14L21 3"/></svg>
+        </a>
+      </li>
+      <li>
+        <a href="https://open.spotify.com/episode/3WAC663eNC4CC4zHYLEEaA" target="_blank" rel="noopener noreferrer" data-outlet="Had I Known" data-date="April 11, 2021 &middot; 1 hr 9 min" data-desc="In this hour-long conversation, Toni traced her path from Hamilton College into a television producing career, and spoke about supporting other women in entertainment through Callsheets 2 Cocktails.">
+          <span class="media-year">2021</span>          <span class="media-body">
+            <span class="media-title">Had I Known: From Hamilton College to Hollywood with Emmy Award-Winning Producer Toni Bullock</span>
+            <span class="media-type">Podcast</span>
+            <span class="media-desc">From Hamilton College to a television producing career.</span>
+          </span>
+          <svg class="media-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="M10 14L21 3"/></svg>
+        </a>
+      </li>
+      <li>
+        <a href="https://web.archive.org/web/20221002121547/http://voyagela.com/interview/meet-toni-bullock-tv-producer-creator-callsheets-2-cocktails/" target="_blank" rel="noopener noreferrer" data-outlet="Voyage LA" data-date="2019" data-desc="Voyage LA covered Toni&rsquo;s start at WNYC radio as a teenager, her psychology studies at Hamilton College, and her first production assistant job on the final season of Scrubs. The piece also touches on her career advice around persistence and networking.">
+          <span class="media-year">2019</span>          <span class="media-body">
+            <span class="media-title">Voyage LA: Meet Toni Bullock, TV Producer + Creator, Callsheets 2 Cocktails</span>
+            <span class="media-type">Article</span>
+            <span class="media-desc">Her start at WNYC and first production job on Scrubs.</span>
+          </span>
+          <svg class="media-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="M10 14L21 3"/></svg>
+        </a>
+      </li>
+    </ul>
+
+    <!-- TODO: confirm publish year with client, then move into main chronological list above -->
+    <h3 class="field-label media-sublabel">Spotlight</h3>
+    <ul class="media-list">
+      <li>
+        <a href="https://www.youtube.com/watch?v=ExgU-QCI6aI" target="_blank" rel="noopener noreferrer" data-outlet="Had I Known" data-desc="A video companion to the Had I Known podcast conversation, covering the same ground: Toni&rsquo;s path from Hamilton College into television production and her work with Callsheets 2 Cocktails.">
+          <span class="media-year"></span>          <span class="media-body">
+            <span class="media-title">Had I Known virtual interview</span>
+            <span class="media-type">Video</span>
+            <span class="media-desc">A video companion to the Had I Known podcast.</span>
+          </span>
+          <svg class="media-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="M10 14L21 3"/></svg>
+        </a>
+      </li>
+      <li>
+        <a href="https://www.hamilton.edu/news/stories/opportunity-program-podcast-aaron-ray" target="_blank" rel="noopener noreferrer" data-outlet="Hamilton College" data-desc="Hamilton College&rsquo;s Opportunity Program podcast featured Toni Bullock (&rsquo;08) as an alum guest, part of a series celebrating OP students, alumni, and faculty.">
+          <span class="media-year"></span>          <span class="media-body">
+            <span class="media-title">Hamilton College Opportunity Program podcast</span>
+            <span class="media-type">Podcast</span>
+            <span class="media-desc">An alum guest on the Opportunity Program podcast.</span>
+          </span>
+          <svg class="media-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="M10 14L21 3"/></svg>
+        </a>
+      </li>
+      <li>
+        <a href="https://ebonigrayportfolio.wixsite.com/mysite/post/toni-bullock-on-her-life-in-the-entertainment-industry-and-the-path-to-her-success" target="_blank" rel="noopener noreferrer" data-outlet="Her Agenda" data-desc="In this longer-form interview, Toni discussed her early internship at WNYC, her graduate studies at Syracuse&rsquo;s Newhouse School, and her early industry experience in unscripted development. She spoke about building genuine mentor relationships and protecting her mental health while adjusting to life in Los Angeles.">
+          <span class="media-year"></span>          <span class="media-body">
+            <span class="media-title">Her Agenda / Eboni Gray: Toni Bullock on her life in the entertainment industry and the path to her success</span>
+            <span class="media-type">Article</span>
+            <span class="media-desc">A longer-form interview on her early career and mentorship.</span>
+          </span>
+          <svg class="media-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="M10 14L21 3"/></svg>
+        </a>
+      </li>
+      <li>
+        <a href="https://www.marvelwood.org/news/community-spotlight-bullock-toni" target="_blank" rel="noopener noreferrer" data-outlet="Marvelwood School" data-desc="Toni Bullock (&rsquo;04) was featured in Marvelwood School&rsquo;s community spotlight, reflecting on how the school shaped her adaptability and leadership, and discussing her television career and Callsheets 2 Cocktails, which she founded in 2017.">
+          <span class="media-year"></span>          <span class="media-body">
+            <span class="media-title">Marvelwood community spotlight</span>
+            <span class="media-type">Article</span>
+            <span class="media-desc">A community spotlight on the school that shaped her.</span>
+          </span>
+          <svg class="media-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="M10 14L21 3"/></svg>
+        </a>
+      </li>
+    </ul>
+    </div>
+    </div>
+  </div>
+</section>
+
 <section class="pad" id="ventures">
   <div class="wrap">
     <span class="field-label">Ventures</span>
-    <h2 style="font-size: clamp(1.6rem, 3.5vw, 2.2rem); margin-bottom: 0.5rem;">Two rooms, one standard.</h2>
+    <h2 style="font-size: clamp(1.6rem, 3.5vw, 2.2rem); margin-bottom: 0.5rem;">Two rooms, one standard</h2>
     <div class="ventures-grid">
       <div class="venture-card">
         <h3>Callsheets 2 Cocktails</h3>
@@ -1615,22 +1761,25 @@
       </figure>
       <div class="how-copy">
         <span class="field-label">Three ways in</span>
-        <h2 style="font-size: clamp(1.8rem, 4vw, 2.6rem);">Where to start.</h2>
+        <h2 style="font-size: clamp(1.8rem, 4vw, 2.6rem);">Where to start</h2>
         <div class="paths">
           <div class="path">
             <div class="num">01</div>
             <h3>See the work</h3>
             <p>National Emmy-winning credits across unscripted television, from Red Table Talk to Sherri.</p>
+            <a href="#timeline" class="path-link">See the work <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg></a>
           </div>
           <div class="path">
             <div class="num">02</div>
             <h3>Join the room</h3>
             <p>Callsheets 2 Cocktails, founded 2017: a professional community for women in media.</p>
+            <a href="#ventures" class="path-link">Join the room <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg></a>
           </div>
           <div class="path">
             <div class="num">03</div>
             <h3>Book the team</h3>
             <p>Effortlessly Coordinated: weddings, proposals, and corporate events in Brooklyn.</p>
+            <a href="#contact" class="path-link">Book the team <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg></a>
           </div>
         </div>
       </div>
@@ -1684,7 +1833,7 @@
       <div class="faq-item">
         <h3>
           <button class="faq-question" id="faq-q4" aria-expanded="false" aria-controls="faq-a4">
-            <span>Does Effortlessly Coordinated serve Brooklyn weddings?</span>
+            <span>Can Effortlessly Coordinated plan my Brooklyn wedding?</span>
             <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
           </button>
         </h3>
@@ -1701,7 +1850,7 @@
     <div class="contact-layout">
       <div class="contact-intro">
         <span class="field-label">Get in touch</span>
-        <h2 style="font-size: clamp(1.8rem, 4vw, 2.4rem);">Every project starts with a conversation.</h2>
+        <h2 style="font-size: clamp(1.8rem, 4vw, 2.4rem);">Every project starts with a conversation</h2>
         <p class="contact-intro-copy">From production collaborations to the biggest day of your life, I&rsquo;d love to hear your story and help bring it to life.</p>
 
         <div class="contact-connect">
@@ -1721,7 +1870,10 @@
       </div>
 
       <div class="contact-card">
-        <h3>Toni Bullock</h3>
+        <div class="contact-card-head">
+          <h3>Toni Bullock</h3>
+          <p class="contact-phone"><a href="tel:+17184906728">+1 (718) 490-6728</a></p>
+        </div>
 
         <form id="contact-form" class="contact-form" novalidate>
         <div class="form-two-col">
@@ -1739,7 +1891,7 @@
         </div>
 
         <div class="form-row" id="row-reason">
-          <label for="f-reason">What do you need?</label>
+          <label for="f-reason">How may I assist you today?</label>
           <!-- Visible labels are need-based; option VALUES unchanged so form routing/data stay identical -->
           <select id="f-reason" name="reason" required>
             <option value="" disabled selected>Choose one</option>
@@ -1794,9 +1946,13 @@
   <div class="media-modal-overlay" data-close></div>
   <div class="media-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="media-modal-title">
     <button class="media-modal-close" type="button" data-close aria-label="Close">&times;</button>
-    <span class="media-modal-type" id="media-modal-type"></span>
-    <h3 class="media-modal-title" id="media-modal-title"></h3>
     <div class="media-modal-media" id="media-modal-media"></div>
+    <span class="media-modal-outlet" id="media-modal-outlet"></span>
+    <h3 class="media-modal-title" id="media-modal-title"></h3>
+    <div class="media-modal-meta">
+      <span class="media-modal-badge" id="media-modal-type"></span>
+      <span class="media-modal-date" id="media-modal-date"></span>
+    </div>
     <p class="media-modal-desc" id="media-modal-desc"></p>
     <div class="media-modal-links" id="media-modal-links"></div>
   </div>
@@ -1841,7 +1997,7 @@
   // NOT by this codebase. This webhook is now the only delivery path.
   // The URL below is an inbound-only CRM capture hook; it is expected to be visible
   // in client-side JS and carries no auth token, so it is intentionally not obfuscated.
-  const GHL_WEBHOOK_URL = 'https://services.leadconnectorhq.com/hooks/BIYAuzDQSzo2eAudvlab/webhook-trigger/a0a7e095-cc4e-4d7c-826d-8e3dba5cec06';
+  const GHL_WEBHOOK_URL = 'https://services.leadconnectorhq.com/hooks/BIYAuzDQSzo2eAudvlab/webhook-trigger/8421837f-68a6-47fc-8c89-e1b68c42164c';
   const contactForm = document.getElementById('contact-form');
   const formConfirm = document.getElementById('form-confirm');
   const formError = document.getElementById('form-error');
@@ -1913,33 +2069,30 @@
     });
   }
 
-  // Media detail modal: one reusable modal, fed by each clicked media card's data.
-  // Contents adapt per item type — Video items embed a real player; Podcast/Article
-  // items show the image (when one exists) plus external listen/read buttons. Reads
-  // title / type / year straight from the card, plus optional data-desc / data-img.
+  // Media detail modal: one reusable, keyboard-accessible modal fed by each item's data.
+  // Every media item (main list + Spotlight) is clickable. Shows image, outlet, title,
+  // date, a type badge, a summary, and the item's external link button(s).
   // Degrades gracefully: with JS off, the cards still navigate to their source URLs.
   (function () {
     const modal = document.getElementById('media-modal');
     if (!modal) return;
-    const elType  = document.getElementById('media-modal-type');
-    const elTitle = document.getElementById('media-modal-title');
-    const elMedia = document.getElementById('media-modal-media');
-    const elDesc  = document.getElementById('media-modal-desc');
-    const elLinks = document.getElementById('media-modal-links');
+    const dialog   = modal.querySelector('.media-modal-dialog');
+    const elMedia  = document.getElementById('media-modal-media');
+    const elOutlet = document.getElementById('media-modal-outlet');
+    const elTitle  = document.getElementById('media-modal-title');
+    const elType   = document.getElementById('media-modal-type');
+    const elDate   = document.getElementById('media-modal-date');
+    const elDesc   = document.getElementById('media-modal-desc');
+    const elLinks  = document.getElementById('media-modal-links');
     let lastFocused = null;
 
     function txt(el, sel) { const n = el.querySelector(sel); return n ? n.textContent.trim() : ''; }
 
-    // Pull the YouTube video id out of a watch / youtu.be / embed URL, else null.
-    function youTubeId(url) {
-      const m = url.match(/(?:youtube\.com\/(?:watch\?(?:.*&)?v=|embed\/)|youtu\.be\/)([\w-]{11})/);
-      return m ? m[1] : null;
-    }
-
-    // Build a labelled external button (opens in a new tab).
-    function linkButton(href, label) {
+    // Build a labelled external link (opens in a new tab). `plain` renders a text
+    // link instead of a filled button (used for the podcast's Spotify link).
+    function linkButton(href, label, plain) {
       const a = document.createElement('a');
-      a.className = 'media-modal-link';
+      a.className = plain ? 'media-modal-plainlink' : 'media-modal-link';
       a.href = href;
       a.target = '_blank';
       a.rel = 'noopener noreferrer';
@@ -1947,63 +2100,34 @@
       return a;
     }
 
-    // card    = element the click handler is bound to (holds .media-title / .media-type / data-*)
-    // primary = the <a> whose href is the item's own source URL
-    // links   = optional list of extra {href,label} buttons (podcast platforms)
-    function openModal(card, primary, links) {
+    // card  = element holding the item data (.media-title / .media-type / data-*)
+    // links = [{href,label}] buttons to show (podcast platforms, or a single source link)
+    function openModal(card, links) {
       const type = txt(card, '.media-type');
-      const year = txt(card, '.media-year');
-      const href = primary.getAttribute('href');
-      elType.textContent  = [type, year].filter(Boolean).join('  ·  ');
-      elTitle.textContent = txt(card, '.media-title');
-
-      // Description
+      const title = txt(card, '.media-title');
+      const outlet = card.getAttribute('data-outlet') || '';
+      const date = card.getAttribute('data-date') || txt(card, '.media-year');
+      const img = card.getAttribute('data-img') || '';
       const desc = card.getAttribute('data-desc') || '';
+
+      // Image (top)
+      elMedia.innerHTML = '';
+      if (img) {
+        const im = document.createElement('img');
+        im.src = img; im.alt = title || outlet; im.loading = 'lazy';
+        elMedia.appendChild(im);
+      }
+      elOutlet.textContent = outlet;
+      elTitle.textContent = title;
+      elType.textContent = type;
+      elType.hidden = !type;
+      elDate.textContent = date;
       elDesc.textContent = desc;
       elDesc.hidden = !desc;
 
-      // Media: video player for Video items, otherwise an image when one is available.
-      elMedia.innerHTML = '';
-      const title = elTitle.textContent;
-      const isVideo = type.toLowerCase() === 'video';
-      const ytId = isVideo ? youTubeId(href) : null;
-      if (ytId) {
-        // Real embedded player, autoplay OFF (no autoplay param).
-        const wrap = document.createElement('div');
-        wrap.className = 'media-modal-video';
-        const iframe = document.createElement('iframe');
-        iframe.src = 'https://www.youtube-nocookie.com/embed/' + ytId;
-        iframe.title = title;
-        iframe.allow = 'accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
-        iframe.setAttribute('allowfullscreen', '');
-        wrap.appendChild(iframe);
-        elMedia.appendChild(wrap);
-      } else {
-        // Reuse the item's existing image. For a YouTube video with no local image we
-        // fall back to the video's own thumbnail (still the item's real thumbnail).
-        const vid = isVideo ? youTubeId(href) : null;
-        const src = card.getAttribute('data-img')
-                 || (vid ? 'https://img.youtube.com/vi/' + vid + '/hqdefault.jpg' : '');
-        if (src) {
-          const im = document.createElement('img');
-          im.src = src;
-          im.alt = title;
-          im.loading = 'lazy';
-          elMedia.appendChild(im);
-        }
-      }
-
-      // Links: platform buttons when supplied, otherwise a single source button
-      // labelled to match the type (Listen / Read / Watch / Visit).
+      // Links (preserved from the item, opening in a new tab)
       elLinks.innerHTML = '';
-      if (links && links.length) {
-        links.forEach(l => elLinks.appendChild(linkButton(l.href, l.label)));
-      } else {
-        const t = type.toLowerCase();
-        const label = t === 'podcast' ? 'Listen' : t === 'article' ? 'Read the article'
-                    : t === 'video' ? 'Watch on YouTube' : 'Visit source';
-        elLinks.appendChild(linkButton(href, label));
-      }
+      links.forEach(l => elLinks.appendChild(linkButton(l.href, l.label, l.plain)));
 
       lastFocused = document.activeElement;
       modal.hidden = false;
@@ -2013,30 +2137,73 @@
 
     function closeModal() {
       modal.hidden = true;
-      elMedia.innerHTML = '';   // tearing down the iframe stops any video playback
+      elMedia.innerHTML = '';
       document.body.style.overflow = '';
       if (lastFocused && lastFocused.focus) lastFocused.focus();
     }
 
-    // Standard media rows: the direct <a> child of each <li> is both the card and the source link.
-    document.querySelectorAll('.media-list li > a[href^="http"]').forEach(a => {
-      a.addEventListener('click', (e) => { e.preventDefault(); openModal(a, a, null); });
+    // Escape closes; Tab is trapped within the dialog while the modal is open.
+    document.addEventListener('keydown', (e) => {
+      if (modal.hidden) return;
+      if (e.key === 'Escape') { closeModal(); return; }
+      if (e.key !== 'Tab') return;
+      const f = dialog.querySelectorAll('a[href], button:not([disabled])');
+      if (!f.length) return;
+      const first = f[0], last = f[f.length - 1];
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
     });
 
-    // Podcast entry: the title link points at #podcast, and the item's listen links live
-    // in .media-platforms. Open the modal from the title, feeding it all platform buttons.
+    // Single source link for a standard item, labelled to match its type.
+    function sourceLink(a) {
+      const t = txt(a, '.media-type').toLowerCase();
+      const label = t === 'podcast' ? 'Listen' : t === 'article' ? 'Read the article'
+                  : t === 'video' ? 'Watch on YouTube' : 'Visit source';
+      return [{ href: a.getAttribute('href'), label }];
+    }
+
+    // Standard media rows: the direct <a> child of each <li> is the card + source link.
+    document.querySelectorAll('.media-list li > a[href^="http"]').forEach(a => {
+      a.addEventListener('click', (e) => { e.preventDefault(); openModal(a, sourceLink(a)); });
+    });
+
+    // Podcast entry: data lives on .media-entry; its listen links are in .media-platforms
+    // (hidden inline, shown only in the modal).
     document.querySelectorAll('.media-list li.media-podcast .media-entry').forEach(entry => {
       const titleLink = entry.querySelector('.media-body-link');
       if (!titleLink) return;
       const links = Array.from(entry.querySelectorAll('.media-platforms a'))
-        .map(a => ({ href: a.href, label: a.textContent.trim() }));
-      const source = links[0] ? { getAttribute: () => links[0].href } : titleLink;
-      titleLink.addEventListener('click', (e) => { e.preventDefault(); openModal(entry, source, links); });
+        .map(a => ({ href: a.href, label: a.textContent.trim(), plain: true }));
+      titleLink.addEventListener('click', (e) => { e.preventDefault(); openModal(entry, links); });
     });
 
     modal.querySelectorAll('[data-close]').forEach(el => el.addEventListener('click', closeModal));
-    document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !modal.hidden) closeModal(); });
   })();
+
+  // Scroll-spy: highlight the nav link for whichever section is currently in view.
+  // Uses IntersectionObserver (not scroll math) with a mid-viewport band for reliability.
+  (function () {
+    const links = Array.from(document.querySelectorAll('nav.site-nav .links a[href^="#"]'));
+    const secToLink = new Map();
+    links.forEach(a => {
+      const sec = document.getElementById(a.getAttribute('href').slice(1));
+      if (sec) secToLink.set(sec, a);
+    });
+    if (!secToLink.size || !('IntersectionObserver' in window)) return;
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        const active = secToLink.get(entry.target);
+        if (!active) return;
+        links.forEach(l => l.classList.remove('active'));
+        active.classList.add('active');
+      });
+    }, { rootMargin: '-45% 0px -50% 0px', threshold: 0 });
+
+    secToLink.forEach((_link, sec) => observer.observe(sec));
+  })();
+
 </script>
 
 </body>
