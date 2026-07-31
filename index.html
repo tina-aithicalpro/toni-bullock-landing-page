@@ -30,9 +30,9 @@
   :root {
     --ink: #1B1B19;
     --cream: #FAFAF8;
-    --accent: #5B3FA4;        /* violet-leaning secondary (was #3F49A4 indigo; same luminance ≈ same contrast) */
-    --accent-bright: #B8ACE2; /* lighter violet for on-dark contexts */
-    --accent-dark: #48327F;   /* darker violet for button hover states */
+    --accent: #822A3B;        /* maroon / wine secondary (was #5B3FA4 violet) */
+    --accent-bright: #E0A6B0; /* lighter rose for on-dark contexts */
+    --accent-dark: #641F2D;   /* darker maroon for button hover states */
     --emerald: #1B4332;       /* deep emerald, secondary accent */
     /* Back-compat aliases so any stray var(--gold*) still resolves to the accent */
     --gold: var(--accent);
@@ -684,7 +684,7 @@
     transition: background 0.15s ease;
   }
 
-  .media-list a:hover { background: rgba(91, 63, 164, 0.055); }
+  .media-list a:hover { background: rgba(130, 42, 59, 0.055); }
   .media-list a:hover .media-title { color: var(--accent); }
   .media-list a:hover .media-icon { color: var(--accent); }
 
@@ -1170,7 +1170,7 @@
   .media-modal-badge {
     display: inline-block; font-family: 'Inter', sans-serif; font-size: 0.65rem; font-weight: 600;
     letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent);
-    background: rgba(91, 63, 164, 0.1); border: 1px solid rgba(91, 63, 164, 0.28);
+    background: rgba(130, 42, 59, 0.1); border: 1px solid rgba(130, 42, 59, 0.28);
     border-radius: 999px; padding: 0.25rem 0.7rem;
   }
   .media-modal-date { font-family: 'Inter', sans-serif; font-size: 0.82rem; color: rgba(27, 27, 25, 0.6); }
