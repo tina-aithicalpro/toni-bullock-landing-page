@@ -667,104 +667,57 @@
   .credits-rows li.is-highlight .credit-name { color: #FFFFFF; }
   .credits-rows li.is-highlight .credit-role { color: var(--accent-bright); }
 
-  /* MEDIA / PRESS */
-  .media-list { list-style: none; margin-top: 2.5rem; max-width: 56rem; }
-
-  .media-list li { border-top: 1px solid var(--hairline); }
-  .media-list li:last-child { border-bottom: 1px solid var(--hairline); }
-
-  .media-list a {
-    display: flex;
-    align-items: center;
-    gap: 1.5rem;
-    padding: 1.4rem 1rem;
-    border-radius: 8px;
-    text-decoration: none;
-    color: var(--ink);
-    transition: background 0.15s ease;
+  /* MEDIA / PRESS — filterable card grid */
+  .media-tabs { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 1.75rem 0 2.25rem; }
+  .media-tab {
+    font-family: 'Inter', sans-serif; font-size: 0.78rem; font-weight: 600; letter-spacing: 0.06em;
+    text-transform: uppercase; color: var(--ink); background: transparent;
+    border: 1px solid var(--hairline); border-radius: 999px; padding: 0.5rem 1.1rem; cursor: pointer;
+    transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
   }
+  .media-tab:hover { border-color: var(--accent); color: var(--accent); }
+  .media-tab.is-active { background: var(--accent); border-color: var(--accent); color: #FFFFFF; }
 
-  .media-list a:hover { background: rgba(130, 42, 59, 0.055); }
-  .media-list a:hover .media-title { color: var(--accent); }
-  .media-list a:hover .media-icon { color: var(--accent); }
+  .media-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; }
+  @media (max-width: 960px) { .media-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 640px) { .media-grid { grid-template-columns: 1fr; } }
 
-  /* Press thumbnail; broken/not-yet-added files remove themselves via onerror so the row stays clean */
-  .media-thumb {
-    flex: 0 0 auto;
-    width: 5.5rem;
-    height: 5.5rem;
-    object-fit: cover;
-    border-radius: 6px;
-    border: 1px solid var(--hairline);
-    background: rgba(27, 27, 25, 0.04);
+  .media-card {
+    display: flex; flex-direction: column;
+    background: var(--cream); border: 1px solid var(--hairline); border-radius: 6px;
+    padding: 1.5rem; text-decoration: none; color: var(--ink);
+    box-shadow: 0 14px 34px -26px rgba(27, 27, 25, 0.5);
+    transition: box-shadow 0.18s ease, border-color 0.18s ease;
+    animation: media-card-in 0.5s ease both;
+    animation-delay: calc(var(--i, 0) * 60ms);
   }
-  @media (max-width: 560px) { .media-thumb { width: 4rem; height: 4rem; } }
+  .media-card:hover { box-shadow: 0 24px 46px -22px rgba(27, 27, 25, 0.55); border-color: var(--accent); }
+  .media-card.is-hidden { display: none; }
 
-  .media-year:empty { display: none; }
-  .media-year {
-    flex: 0 0 3rem;
-    align-self: center;
-    font-family: 'Inter', sans-serif;
-    font-size: 0.8rem;
-    font-weight: 600;
-    letter-spacing: 0.04em;
-    color: var(--accent);
+  @keyframes media-card-in {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
   }
+  @media (prefers-reduced-motion: reduce) { .media-card { animation: none; } }
 
-  .media-body { flex: 1; min-width: 0; display: flex; flex-direction: column; align-items: flex-start; text-align: left; }
-  /* Type reads as a small label above the title; description sits below */
-  .media-body .media-type { order: -1; margin-bottom: 0.3rem; }
+  /* Logo, or wordmark + category-icon fallback when no logo file exists */
+  .media-card-logo { height: 3.25rem; display: flex; align-items: center; margin-bottom: 1.1rem; }
+  .media-card-logo img { max-height: 3.25rem; max-width: 100%; width: auto; object-fit: contain; }
+  .media-card-logo--fallback { gap: 0.6rem; }
+  .media-card-icon { width: 1.5rem; height: 1.5rem; color: var(--accent); flex: 0 0 auto; }
+  .media-card-wordmark { font-family: 'Forum', serif; font-size: 1.3rem; line-height: 1.1; color: var(--ink); }
 
-  .media-title {
-    display: block;
-    font-family: 'Forum', serif;
-    font-weight: 400;
-    font-size: 1.25rem;
-    line-height: 1.3;
-    margin-bottom: 0.35rem;
-    transition: color 0.15s ease;
+  .media-card-cat {
+    font-family: 'Inter', sans-serif; font-size: 0.64rem; font-weight: 600; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--accent); margin-bottom: 0.5rem;
   }
-
-  .media-type {
-    display: block;
-    font-family: 'Inter', sans-serif;
-    font-size: 0.7rem;
-    font-weight: 600;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: rgba(27, 27, 25, 0.55);
+  .media-card-title {
+    font-family: 'Forum', serif; font-weight: 400; font-size: 1.12rem; line-height: 1.3;
+    margin: 0 0 0.7rem; transition: color 0.15s ease;
   }
-
-  /* Short description shown under each media item so rows aren't just a title */
-  .media-desc {
-    display: block;
-    font-family: 'Inter', sans-serif;
-    font-size: 0.88rem;
-    line-height: 1.55;
-    color: rgba(27, 27, 25, 0.7);
-    margin-top: 0.4rem;
-    max-width: 44rem;
-  }
-
-  .media-icon {
-    flex: 0 0 auto;
-    width: 1rem;
-    height: 1rem;
-    margin-top: 0.35rem;
-    color: rgba(27, 27, 25, 0.45);
-    transition: color 0.15s ease;
-  }
-
-  .media-sublabel { margin-top: 3rem; }
-
-  /* Podcast item now uses the same flat "<li> > <a> > .media-body" structure as every
-     other media item, so it inherits ".media-list a" for the row and ".media-body" for
-     the left-aligned text column — no separate wrapper needed. */
-  .media-body-link { cursor: pointer; }
-
-  @media (max-width: 560px) {
-    .media-list a { gap: 1rem; flex-wrap: wrap; }
-    .media-list a .media-year { flex-basis: 100%; padding-top: 0; margin-bottom: 0.35rem; }
+  .media-card:hover .media-card-title { color: var(--accent); }
+  .media-card-date {
+    margin-top: auto; font-family: 'Inter', sans-serif; font-size: 0.78rem; color: rgba(27, 27, 25, 0.6);
   }
 
   /* EVENT GALLERY */
@@ -1543,136 +1496,86 @@
 
 <section class="pad" id="media">
   <div class="wrap">
-    <div class="media-layout">
-    <div class="media-copy">
     <h2 class="field-label">Media</h2>
-    <ul class="media-list">
-      <li class="media-podcast">
-        <a class="media-body-link" href="#podcast" data-outlet="Inside Diverse Cinema" data-date="July 28, 2026 &middot; 51 min" data-img="images/inside-diverse-cinema-ep105.jpeg" data-desc="An interview with Emmy Award-Winning producer Toni L. Bullock (&ldquo;Black Women Own the Conversation&rdquo;) exploring the creative and professional realities of unscripted television production. Covers producing and casting, the impact of her Emmy win, the producing ecosystems of Los Angeles and New York, and the importance of networking and professional reinvention in an evolving entertainment industry.">
-          <span class="media-year">2026</span>
-          <span class="media-body">
-            <span class="media-title">Inside Diverse Cinema, Episode 105: Emmy&reg; Award-Winning Producer Toni Bullock on Unscripted Television, Networking &amp; the Future of Storytelling</span>
-            <span class="media-type">Podcast</span>
-            <span class="media-desc">On unscripted TV, her Emmy win, and networking.</span>
-          </span>
-          <svg class="media-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="M10 14L21 3"/></svg>
-        </a>
-      </li>
-      <li>
-        <a href="https://influentialwomen.com/connect/toni-bullock" target="_blank" rel="noopener noreferrer" data-outlet="Influential Women" data-date="2026" data-desc="Influential Women profiled Toni&rsquo;s dual career: her production background out of Hamilton College and Syracuse&rsquo;s Newhouse School, her move into event coordination with Effortlessly Coordinated, and Callsheets 2 Cocktails&rsquo; growth into events across New York, Los Angeles, Atlanta, and Bali. The piece highlights her focus on operational execution over design, and her advice to young women to own their expertise and build authentic relationships.">
-          <span class="media-year">2026</span>          <span class="media-body">
-            <span class="media-title">Influential Women feature</span>
-            <span class="media-type">Article</span>
-            <span class="media-desc">A profile of her production and event-coordination career.</span>
-          </span>
-          <svg class="media-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="M10 14L21 3"/></svg>
-        </a>
-      </li>      <li>
-        <a href="https://web.archive.org/web/20251207005939/https://boldjourney.com/meet-toni-bullock/" target="_blank" rel="noopener noreferrer" data-outlet="Bold Journey" data-date="2025" data-desc="Bold Journey featured Toni&rsquo;s path building two ventures &mdash; Callsheets 2 Cocktails and Effortlessly Coordinated &mdash; off the relationships from her Emmy-winning unscripted TV career. She spoke about treating career setbacks as redirection rather than failure, and about launching both businesses without waiting for outside validation.">
-          <span class="media-year">2025</span>          <span class="media-body">
-            <span class="media-title">BOLD Journey: Meet Toni Bullock</span>
-            <span class="media-type">Article</span>
-            <span class="media-desc">On building two ventures from her Emmy-winning TV career.</span>
-          </span>
-          <svg class="media-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="M10 14L21 3"/></svg>
-        </a>
-      </li>
-      <li>
-        <a href="https://www.stage32.com/blog/3627" target="_blank" rel="noopener noreferrer" data-outlet="Stage 32" data-date="2024" data-desc="Stage 32 announced Toni as one of its executives available for pilot script feedback, profiling her decade of unscripted development and casting work across Netflix, Bravo, CBS, and OWN. The announcement credits her with producing the Emmy-winning Black Women OWN the Conversation, alongside Red Table Talk, The Amazing Race, and Top Chef.">
-          <span class="media-year">2024</span>          <span class="media-body">
-            <span class="media-title">Stage 32 blog feature</span>
-            <span class="media-type">Article</span>
-            <span class="media-desc">Named an executive open to giving pilot script feedback.</span>
-          </span>
-          <svg class="media-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="M10 14L21 3"/></svg>
-        </a>
-      </li>
-      <li>
-        <a href="https://www.youtube.com/watch?v=MJoRexToOkw" target="_blank" rel="noopener noreferrer" data-outlet="Callsheets 2 Cocktails" data-date="2023" data-desc="A Callsheets 2 Cocktails Black History Month panel in which Black television executives share career advice with the next generation of media professionals.">
-          <span class="media-year">2023</span>          <span class="media-body">
-            <span class="media-title">C2C Black History Month: Black TV Executives Give Advice to Next Generation</span>
-            <span class="media-type">Video</span>
-            <span class="media-desc">Black TV executives share advice with the next generation.</span>
-          </span>
-          <svg class="media-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="M10 14L21 3"/></svg>
-        </a>
-      </li>
-      <li>
-        <a href="https://heragenda.com/p/toni-bullock/" target="_blank" rel="noopener noreferrer" data-outlet="Her Agenda" data-date="2022" data-desc="Her Agenda profiled Toni&rsquo;s unscripted development work, along with earlier freelance producing credits including Peace of Mind with Taraji as supervising producer. She discussed the challenges of being a woman of color in entertainment and how Callsheets 2 Cocktails, founded in 2017, grew into a low-barrier community of mixers and educational events across Los Angeles and New York.">
-          <span class="media-year">2022</span>          <span class="media-body">
-            <span class="media-title">Her Agenda profile</span>
-            <span class="media-type">Article</span>
-            <span class="media-desc">On unscripted development and founding Callsheets 2 Cocktails.</span>
-          </span>
-          <svg class="media-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="M10 14L21 3"/></svg>
-        </a>
-      </li>
-      <li>
-        <a href="https://open.spotify.com/episode/3WAC663eNC4CC4zHYLEEaA" target="_blank" rel="noopener noreferrer" data-outlet="Had I Known" data-date="April 11, 2021 &middot; 1 hr 9 min" data-desc="In this hour-long conversation, Toni traced her path from Hamilton College into a television producing career, and spoke about supporting other women in entertainment through Callsheets 2 Cocktails.">
-          <span class="media-year">2021</span>          <span class="media-body">
-            <span class="media-title">Had I Known: From Hamilton College to Hollywood with Emmy Award-Winning Producer Toni Bullock</span>
-            <span class="media-type">Podcast</span>
-            <span class="media-desc">From Hamilton College to a television producing career.</span>
-          </span>
-          <svg class="media-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="M10 14L21 3"/></svg>
-        </a>
-      </li>
-      <li>
-        <a href="https://web.archive.org/web/20221002121547/http://voyagela.com/interview/meet-toni-bullock-tv-producer-creator-callsheets-2-cocktails/" target="_blank" rel="noopener noreferrer" data-outlet="Voyage LA" data-date="2019" data-desc="Voyage LA covered Toni&rsquo;s start at WNYC radio as a teenager, her psychology studies at Hamilton College, and her first production assistant job on the final season of Scrubs. The piece also touches on her career advice around persistence and networking.">
-          <span class="media-year">2019</span>          <span class="media-body">
-            <span class="media-title">Voyage LA: Meet Toni Bullock, TV Producer + Creator, Callsheets 2 Cocktails</span>
-            <span class="media-type">Article</span>
-            <span class="media-desc">Her start at WNYC and first production job on Scrubs.</span>
-          </span>
-          <svg class="media-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="M10 14L21 3"/></svg>
-        </a>
-      </li>
-    </ul>
-
-    <h3 class="field-label media-sublabel">Spotlight</h3>
-    <ul class="media-list">
-      <li>
-        <a href="https://www.youtube.com/watch?v=ExgU-QCI6aI" target="_blank" rel="noopener noreferrer" data-outlet="Had I Known" data-desc="A video companion to the Had I Known podcast conversation, covering the same ground: Toni&rsquo;s path from Hamilton College into television production and her work with Callsheets 2 Cocktails.">
-          <span class="media-year"></span>          <span class="media-body">
-            <span class="media-title">Had I Known virtual interview</span>
-            <span class="media-type">Video</span>
-            <span class="media-desc">A video companion to the Had I Known podcast.</span>
-          </span>
-          <svg class="media-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="M10 14L21 3"/></svg>
-        </a>
-      </li>
-      <li>
-        <a href="https://www.hamilton.edu/news/stories/opportunity-program-podcast-aaron-ray" target="_blank" rel="noopener noreferrer" data-outlet="Hamilton College" data-desc="Hamilton College&rsquo;s Opportunity Program podcast featured Toni Bullock (&rsquo;08) as an alum guest, part of a series celebrating OP students, alumni, and faculty.">
-          <span class="media-year"></span>          <span class="media-body">
-            <span class="media-title">Hamilton College Opportunity Program podcast</span>
-            <span class="media-type">Podcast</span>
-            <span class="media-desc">An alum guest on the Opportunity Program podcast.</span>
-          </span>
-          <svg class="media-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="M10 14L21 3"/></svg>
-        </a>
-      </li>
-      <li>
-        <a href="https://ebonigrayportfolio.wixsite.com/mysite/post/toni-bullock-on-her-life-in-the-entertainment-industry-and-the-path-to-her-success" target="_blank" rel="noopener noreferrer" data-outlet="Her Agenda" data-desc="In this longer-form interview, Toni discussed her early internship at WNYC, her graduate studies at Syracuse&rsquo;s Newhouse School, and her early industry experience in unscripted development. She spoke about building genuine mentor relationships and protecting her mental health while adjusting to life in Los Angeles.">
-          <span class="media-year"></span>          <span class="media-body">
-            <span class="media-title">Her Agenda / Eboni Gray: Toni Bullock on her life in the entertainment industry and the path to her success</span>
-            <span class="media-type">Article</span>
-            <span class="media-desc">A longer-form interview on her early career and mentorship.</span>
-          </span>
-          <svg class="media-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="M10 14L21 3"/></svg>
-        </a>
-      </li>
-      <li>
-        <a href="https://www.marvelwood.org/news/community-spotlight-bullock-toni" target="_blank" rel="noopener noreferrer" data-outlet="Marvelwood School" data-desc="Toni Bullock (&rsquo;04) was featured in Marvelwood School&rsquo;s community spotlight, reflecting on how the school shaped her adaptability and leadership, and discussing her television career and Callsheets 2 Cocktails, which she founded in 2017.">
-          <span class="media-year"></span>          <span class="media-body">
-            <span class="media-title">Marvelwood community spotlight</span>
-            <span class="media-type">Article</span>
-            <span class="media-desc">A community spotlight on the school that shaped her.</span>
-          </span>
-          <svg class="media-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="M10 14L21 3"/></svg>
-        </a>
-      </li>
-    </ul>
+    <!-- Filter controls: vanilla JS show/hide by data-category (see media-filter script) -->
+    <div class="media-tabs" aria-label="Filter media by type">
+      <button class="media-tab is-active" type="button" data-filter="all" aria-pressed="true">All</button>
+      <button class="media-tab" type="button" data-filter="podcast" aria-pressed="false">Podcast</button>
+      <button class="media-tab" type="button" data-filter="press" aria-pressed="false">Press</button>
+      <button class="media-tab" type="button" data-filter="video" aria-pressed="false">Video</button>
     </div>
+    <div class="media-grid">
+      <a class="media-card" data-category="press" href="https://influentialwomen.com/connect/toni-bullock" target="_blank" rel="noopener noreferrer" style="--i:0">
+        <div class="media-card-logo"><img src="media-logos/influential-women.png" alt="Influential Women" loading="lazy"></div>
+        <span class="media-card-cat">Press</span>
+        <h3 class="media-card-title">Influential Women feature</h3>
+        <span class="media-card-date">2026</span>
+      </a>
+      <a class="media-card" data-category="press" href="https://web.archive.org/web/20251207005939/https://boldjourney.com/meet-toni-bullock/" target="_blank" rel="noopener noreferrer" style="--i:1">
+        <div class="media-card-logo"><img src="media-logos/bold-journey.png" alt="Bold Journey" loading="lazy"></div>
+        <span class="media-card-cat">Press</span>
+        <h3 class="media-card-title">BOLD Journey: Meet Toni Bullock</h3>
+        <span class="media-card-date">2025</span>
+      </a>
+      <a class="media-card" data-category="press" href="https://www.stage32.com/blog/3627" target="_blank" rel="noopener noreferrer" style="--i:2">
+        <div class="media-card-logo"><img src="media-logos/stage32.png" alt="Stage 32" loading="lazy"></div>
+        <span class="media-card-cat">Press</span>
+        <h3 class="media-card-title">Stage 32 blog feature</h3>
+        <span class="media-card-date">2024</span>
+      </a>
+      <a class="media-card" data-category="video" href="https://www.youtube.com/watch?v=MJoRexToOkw" target="_blank" rel="noopener noreferrer" style="--i:3">
+        <div class="media-card-logo media-card-logo--fallback">
+          <svg class="media-card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8" fill="currentColor" stroke="none"/></svg>
+          <span class="media-card-wordmark">Callsheets 2 Cocktails</span>
+        </div>
+        <span class="media-card-cat">Video</span>
+        <h3 class="media-card-title">C2C Black History Month: Black TV Executives Give Advice to Next Generation</h3>
+        <span class="media-card-date">2023</span>
+      </a>
+      <a class="media-card" data-category="press" href="https://heragenda.com/p/toni-bullock/" target="_blank" rel="noopener noreferrer" style="--i:4">
+        <div class="media-card-logo"><img src="media-logos/her-agenda.png" alt="Her Agenda" loading="lazy"></div>
+        <span class="media-card-cat">Press</span>
+        <h3 class="media-card-title">Her Agenda profile</h3>
+        <span class="media-card-date">2022</span>
+      </a>
+      <a class="media-card" data-category="podcast" href="https://open.spotify.com/episode/3WAC663eNC4CC4zHYLEEaA" target="_blank" rel="noopener noreferrer" style="--i:5">
+        <div class="media-card-logo media-card-logo--fallback">
+          <svg class="media-card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+          <span class="media-card-wordmark">Had I Known</span>
+        </div>
+        <span class="media-card-cat">Podcast</span>
+        <h3 class="media-card-title">Had I Known: From Hamilton College to Hollywood with Emmy Award-Winning Producer Toni Bullock</h3>
+        <span class="media-card-date">2021</span>
+      </a>
+      <a class="media-card" data-category="press" href="https://web.archive.org/web/20221002121547/http://voyagela.com/interview/meet-toni-bullock-tv-producer-creator-callsheets-2-cocktails/" target="_blank" rel="noopener noreferrer" style="--i:6">
+        <div class="media-card-logo"><img src="media-logos/voyagela.png" alt="Voyage LA" loading="lazy"></div>
+        <span class="media-card-cat">Press</span>
+        <h3 class="media-card-title">Voyage LA: Meet Toni Bullock, TV Producer + Creator, Callsheets 2 Cocktails</h3>
+        <span class="media-card-date">2019</span>
+      </a>
+      <a class="media-card" data-category="video" href="https://www.youtube.com/watch?v=ExgU-QCI6aI" target="_blank" rel="noopener noreferrer" style="--i:7">
+        <div class="media-card-logo media-card-logo--fallback">
+          <svg class="media-card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8" fill="currentColor" stroke="none"/></svg>
+          <span class="media-card-wordmark">Had I Known</span>
+        </div>
+        <span class="media-card-cat">Video</span>
+        <h3 class="media-card-title">Had I Known virtual interview</h3>
+      </a>
+      <a class="media-card" data-category="podcast" href="https://www.hamilton.edu/news/stories/opportunity-program-podcast-aaron-ray" target="_blank" rel="noopener noreferrer" style="--i:8">
+        <div class="media-card-logo"><img src="logos/hamilton-college.webp" alt="Hamilton College" loading="lazy"></div>
+        <span class="media-card-cat">Podcast</span>
+        <h3 class="media-card-title">Hamilton College Opportunity Program podcast</h3>
+      </a>
+      <a class="media-card" data-category="press" href="https://ebonigrayportfolio.wixsite.com/mysite/post/toni-bullock-on-her-life-in-the-entertainment-industry-and-the-path-to-her-success" target="_blank" rel="noopener noreferrer" style="--i:9">
+        <div class="media-card-logo"><img src="media-logos/her-agenda.png" alt="Her Agenda" loading="lazy"></div>
+        <span class="media-card-cat">Press</span>
+        <h3 class="media-card-title">Her Agenda / Eboni Gray: Toni Bullock on her life in the entertainment industry and the path to her success</h3>
+      </a>
+      <a class="media-card" data-category="press" href="https://www.marvelwood.org/news/community-spotlight-bullock-toni" target="_blank" rel="noopener noreferrer" style="--i:10">
+        <div class="media-card-logo"><img src="media-logos/marvelwood-logo.png" alt="Marvelwood School" loading="lazy"></div>
+        <span class="media-card-cat">Press</span>
+        <h3 class="media-card-title">Marvelwood community spotlight</h3>
+      </a>
     </div>
   </div>
 </section>
@@ -2184,6 +2087,27 @@
     }, { rootMargin: '-45% 0px -50% 0px', threshold: 0 });
 
     secToLink.forEach((_link, sec) => observer.observe(sec));
+  })();
+
+  // Media section: tab filtering — show/hide cards by data-category (vanilla, no framework)
+  (function () {
+    const tabs = document.querySelectorAll('#media .media-tab');
+    const cards = document.querySelectorAll('#media .media-card');
+    if (!tabs.length) return;
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        const filter = tab.getAttribute('data-filter');
+        tabs.forEach(t => {
+          const on = t === tab;
+          t.classList.toggle('is-active', on);
+          t.setAttribute('aria-pressed', on ? 'true' : 'false');
+        });
+        cards.forEach(card => {
+          const show = filter === 'all' || card.getAttribute('data-category') === filter;
+          card.classList.toggle('is-hidden', !show);
+        });
+      });
+    });
   })();
 
 </script>
