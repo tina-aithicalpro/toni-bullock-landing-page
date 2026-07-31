@@ -757,48 +757,14 @@
 
   .media-sublabel { margin-top: 3rem; }
 
-  /* Podcast entry: same row rhythm as ".media-list a" (platform links now live in the modal) */
-  .media-entry {
-    display: flex;
-    align-items: center;
-    gap: 1.5rem;
-    padding: 1.4rem 1rem;
-    border-radius: 8px;
-    transition: background 0.15s ease;
-  }
-  .media-entry:hover { background: rgba(91, 63, 164, 0.055); }
+  /* Podcast item now uses the same flat "<li> > <a> > .media-body" structure as every
+     other media item, so it inherits ".media-list a" for the row and ".media-body" for
+     the left-aligned text column — no separate wrapper needed. */
   .media-body-link { cursor: pointer; }
-  .media-platforms {
-    flex: 0 0 auto;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.4rem 0.5rem;
-    max-width: 13rem;
-    justify-content: flex-end;
-  }
-  .media-platforms a {
-    font-family: 'Inter', sans-serif;
-    font-size: 0.68rem;
-    font-weight: 600;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-    text-decoration: none;
-    color: var(--ink);
-    border: 1px solid var(--hairline);
-    border-radius: 2px;
-    padding: 0.3rem 0.55rem;
-    transition: color 0.15s ease, border-color 0.15s ease;
-  }
-  .media-platforms a:hover { color: var(--gold); border-color: var(--gold); }
 
   @media (max-width: 560px) {
     .media-list a { gap: 1rem; flex-wrap: wrap; }
     .media-list a .media-year { flex-basis: 100%; padding-top: 0; margin-bottom: 0.35rem; }
-    /* Podcast entry: stack as blocks so the title and platform buttons never overflow */
-    .media-entry { display: block; padding: 1.25rem 0; }
-    .media-entry .media-year { display: block; padding-top: 0; margin-bottom: 0.35rem; }
-    .media-entry .media-body { display: block; }
-    .media-platforms { max-width: none; justify-content: flex-start; margin-top: 0.75rem; }
   }
 
   /* EVENT GALLERY */
@@ -1216,14 +1182,6 @@
     background: var(--accent); border: 1px solid var(--accent); border-radius: 2px; padding: 0.7rem 1.2rem; transition: background 0.2s ease, border-color 0.2s ease;
   }
   .media-modal-link:hover { background: var(--accent-dark); border-color: var(--accent-dark); color: #FFFFFF; }
-  /* Plain link (not a button) — used for the podcast's Spotify link; same external-link icon as the others */
-  .media-modal-plainlink {
-    display: inline-flex; align-items: center; gap: 0.45rem;
-    font-family: 'Inter', sans-serif; font-weight: 600; font-size: 0.9rem;
-    color: var(--accent); text-decoration: none;
-  }
-  .media-modal-plainlink:hover { color: var(--accent-dark); }
-  .media-modal-plainlink svg { width: 0.95rem; height: 0.95rem; }
   /* Media area inside the modal: holds either a larger image or an embedded video player */
   .media-modal-media { margin-bottom: 1.25rem; }
   .media-modal-media:empty { display: none; }
@@ -1590,16 +1548,15 @@
     <h2 class="field-label">Media</h2>
     <ul class="media-list">
       <li class="media-podcast">
-        <div class="media-entry" data-outlet="Inside Diverse Cinema" data-date="July 28, 2026 &middot; 51 min" data-img="images/inside-diverse-cinema-ep105.jpeg" data-desc="An interview with Emmy Award-Winning producer Toni L. Bullock (&ldquo;Black Women Own the Conversation&rdquo;) exploring the creative and professional realities of unscripted television production. Covers producing and casting, the impact of her Emmy win, the producing ecosystems of Los Angeles and New York, and the importance of networking and professional reinvention in an evolving entertainment industry.">
-          <span class="media-year">2026</span>          <a class="media-body media-body-link" href="#podcast">
+        <a class="media-body-link" href="#podcast" data-outlet="Inside Diverse Cinema" data-date="July 28, 2026 &middot; 51 min" data-img="images/inside-diverse-cinema-ep105.jpeg" data-desc="An interview with Emmy Award-Winning producer Toni L. Bullock (&ldquo;Black Women Own the Conversation&rdquo;) exploring the creative and professional realities of unscripted television production. Covers producing and casting, the impact of her Emmy win, the producing ecosystems of Los Angeles and New York, and the importance of networking and professional reinvention in an evolving entertainment industry.">
+          <span class="media-year">2026</span>
+          <span class="media-body">
             <span class="media-title">Inside Diverse Cinema, Episode 105: Emmy&reg; Award-Winning Producer Toni Bullock on Unscripted Television, Networking &amp; the Future of Storytelling</span>
             <span class="media-type">Podcast</span>
             <span class="media-desc">On unscripted TV, her Emmy win, and networking.</span>
-          </a>
-          <span class="media-platforms" hidden>
-            <a href="https://open.spotify.com/episode/4gnOIrYcnaDJdZo4SapNe1" target="_blank" rel="noopener noreferrer">Listen on Spotify</a>
           </span>
-        </div>
+          <svg class="media-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="M10 14L21 3"/></svg>
+        </a>
       </li>
       <li>
         <a href="https://influentialwomen.com/connect/toni-bullock" target="_blank" rel="noopener noreferrer" data-outlet="Influential Women" data-date="2026" data-desc="Influential Women profiled Toni&rsquo;s dual career: her production background out of Hamilton College and Syracuse&rsquo;s Newhouse School, her move into event coordination with Effortlessly Coordinated, and Callsheets 2 Cocktails&rsquo; growth into events across New York, Los Angeles, Atlanta, and Bali. The piece highlights her focus on operational execution over design, and her advice to young women to own their expertise and build authentic relationships.">
@@ -2101,11 +2058,10 @@
       return m ? m[1] : null;
     }
 
-    // Build a labelled external link (opens in a new tab). `plain` renders a text
-    // link instead of a filled button (used for the podcast's Spotify link).
-    function linkButton(href, label, plain) {
+    // Build a labelled external link button (opens in a new tab).
+    function linkButton(href, label) {
       const a = document.createElement('a');
-      a.className = plain ? 'media-modal-plainlink' : 'media-modal-link';
+      a.className = 'media-modal-link';
       a.href = href;
       a.target = '_blank';
       a.rel = 'noopener noreferrer';
@@ -2157,7 +2113,7 @@
 
       // Links (preserved from the item, opening in a new tab)
       elLinks.innerHTML = '';
-      links.forEach(l => elLinks.appendChild(linkButton(l.href, l.label, l.plain)));
+      links.forEach(l => elLinks.appendChild(linkButton(l.href, l.label)));
 
       lastFocused = document.activeElement;
       modal.hidden = false;
@@ -2197,14 +2153,12 @@
       a.addEventListener('click', (e) => { e.preventDefault(); openModal(a, sourceLink(a)); });
     });
 
-    // Podcast entry: data lives on .media-entry; its listen links are in .media-platforms
-    // (hidden inline, shown only in the modal).
-    document.querySelectorAll('.media-list li.media-podcast .media-entry').forEach(entry => {
-      const titleLink = entry.querySelector('.media-body-link');
-      if (!titleLink) return;
-      const links = Array.from(entry.querySelectorAll('.media-platforms a'))
-        .map(a => ({ href: a.href, label: a.textContent.trim(), plain: true }));
-      titleLink.addEventListener('click', (e) => { e.preventDefault(); openModal(entry, links); });
+    // Podcast item: opens the modal like every other item, with no external link button
+    // (the full listen links live in the #podcast section just above the list).
+    document.querySelectorAll('.media-list li.media-podcast').forEach(li => {
+      const card = li.querySelector('.media-body-link');
+      if (!card) return;
+      card.addEventListener('click', (e) => { e.preventDefault(); openModal(card, []); });
     });
 
     modal.querySelectorAll('[data-close]').forEach(el => el.addEventListener('click', closeModal));
