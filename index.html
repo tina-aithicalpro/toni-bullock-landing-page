@@ -140,7 +140,7 @@
   nav.site-nav .links a:not(.btn-solid) { border-bottom: 2px solid transparent; padding-bottom: 2px; }
   nav.site-nav .links a.active:not(.btn-solid) { color: var(--accent); border-bottom-color: var(--accent); }
 
-  /* Phone number in nav â readable (not uppercased) and consistent with the link row */
+  /* Phone number in nav — readable (not uppercased) and consistent with the link row */
   nav.site-nav .links .nav-phone a { text-transform: none; letter-spacing: 0.01em; font-weight: 600; }
 
   nav.site-nav .links .btn-solid { padding: 0.6rem 1.1rem; color: #FFFFFF; }
@@ -201,7 +201,7 @@
     .hero-grid { grid-template-columns: 1.05fr 0.95fr; gap: 3.5rem; }
   }
 
-  /* Hero â left column */
+  /* Hero — left column */
   .hero-left { max-width: 34rem; }
 
   .hero-eyebrow {
@@ -274,7 +274,7 @@
   }
   .proof-divider { width: 1px; height: 2.4rem; background: var(--hairline); }
 
-  /* Hero â right column */
+  /* Hero — right column */
   .hero-right { position: relative; max-width: 25rem; margin: 0 auto; width: 100%; }
 
   .hero-photo-wrap {
@@ -356,7 +356,7 @@
     transition: background 0.15s ease, color 0.15s ease;
   }
 
-  /* Hover deepens to the darker violet â keeps high contrast with white text */
+  /* Hover deepens to the darker violet — keeps high contrast with white text */
   .btn-solid:hover { background: var(--accent-dark); color: #FFFFFF; }
 
   .btn-ghost {
@@ -667,7 +667,7 @@
   .credits-rows li.is-highlight .credit-name { color: #FFFFFF; }
   .credits-rows li.is-highlight .credit-role { color: var(--accent-bright); }
 
-  /* MEDIA / PRESS â filterable card grid */
+  /* MEDIA / PRESS — filterable card grid */
   .media-tabs { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 1.75rem 0 2.25rem; }
   .media-tab {
     font-family: 'Inter', sans-serif; font-size: 0.78rem; font-weight: 600; letter-spacing: 0.06em;
@@ -960,7 +960,7 @@
   .faq-answer[hidden] { display: none; }
   .faq-item p { font-size: 0.95rem; margin: 0; max-width: 42rem; }
 
-  /* PRODUCED FOR â CLIENT LOGOS */
+  /* PRODUCED FOR — CLIENT LOGOS */
   .logos-section {
     padding: 3.5rem 0 3.75rem;
     background: var(--cream);
@@ -1781,7 +1781,7 @@
     });
   });
 
-  // Contact form: validate, then send via EmailJS. No server POST â JS handles delivery.
+  // Contact form: validate, then send via EmailJS. No server POST — JS handles delivery.
   // Destination inbox + subject are configured on the EmailJS template, not in this code.
   emailjs.init('nQg6lBZvRk59LIYWp');
   const EMAILJS_SERVICE = 'service_cv0d9ya';
@@ -1797,7 +1797,7 @@
       formConfirm.classList.remove('show');
       formError.classList.remove('show');
 
-      // Honeypot: a filled hidden field means a bot â show success, send nothing.
+      // Honeypot: a filled hidden field means a bot — show success, send nothing.
       const honeypot = document.getElementById('f-company');
       if (honeypot && honeypot.value.trim() !== '') {
         contactForm.reset();
@@ -1835,7 +1835,7 @@
         return;
       }
 
-      // Template params â must match the EmailJS template's {{name}} {{email}} {{message}}.
+      // Template params — must match the EmailJS template's {{name}} {{email}} {{message}}.
       // `reason` is sent as an extra param (harmless if the template doesn't use it).
       const params = {
         name: document.getElementById('f-name').value.trim(),
@@ -1884,7 +1884,7 @@
     secToLink.forEach((_link, sec) => observer.observe(sec));
   })();
 
-  // Media section: tab filtering â show/hide cards by data-category (vanilla, no framework)
+  // Media section: tab filtering — show/hide cards by data-category (vanilla, no framework)
   (function () {
     const tabs = document.querySelectorAll('#media .media-tab');
     const cards = document.querySelectorAll('#media .media-card');
