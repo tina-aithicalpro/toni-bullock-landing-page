@@ -140,7 +140,7 @@
   nav.site-nav .links a:not(.btn-solid) { border-bottom: 2px solid transparent; padding-bottom: 2px; }
   nav.site-nav .links a.active:not(.btn-solid) { color: var(--accent); border-bottom-color: var(--accent); }
 
-  /* Phone number in nav — readable (not uppercased) and consistent with the link row */
+  /* Phone number in nav â readable (not uppercased) and consistent with the link row */
   nav.site-nav .links .nav-phone a { text-transform: none; letter-spacing: 0.01em; font-weight: 600; }
 
   nav.site-nav .links .btn-solid { padding: 0.6rem 1.1rem; color: #FFFFFF; }
@@ -201,7 +201,7 @@
     .hero-grid { grid-template-columns: 1.05fr 0.95fr; gap: 3.5rem; }
   }
 
-  /* Hero — left column */
+  /* Hero â left column */
   .hero-left { max-width: 34rem; }
 
   .hero-eyebrow {
@@ -274,7 +274,7 @@
   }
   .proof-divider { width: 1px; height: 2.4rem; background: var(--hairline); }
 
-  /* Hero — right column */
+  /* Hero â right column */
   .hero-right { position: relative; max-width: 25rem; margin: 0 auto; width: 100%; }
 
   .hero-photo-wrap {
@@ -356,7 +356,7 @@
     transition: background 0.15s ease, color 0.15s ease;
   }
 
-  /* Hover deepens to the darker violet — keeps high contrast with white text */
+  /* Hover deepens to the darker violet â keeps high contrast with white text */
   .btn-solid:hover { background: var(--accent-dark); color: #FFFFFF; }
 
   .btn-ghost {
@@ -667,7 +667,7 @@
   .credits-rows li.is-highlight .credit-name { color: #FFFFFF; }
   .credits-rows li.is-highlight .credit-role { color: var(--accent-bright); }
 
-  /* MEDIA / PRESS — filterable card grid */
+  /* MEDIA / PRESS â filterable card grid */
   .media-tabs { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 1.75rem 0 2.25rem; }
   .media-tab {
     font-family: 'Inter', sans-serif; font-size: 0.78rem; font-weight: 600; letter-spacing: 0.06em;
@@ -725,6 +725,7 @@
   @media (min-width: 640px) { .event-grid { grid-template-columns: repeat(2, 1fr); } }
   .event-card figure { margin: 0; }
   .event-card img { display: block; width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border: 1px solid var(--hairline); border-radius: 3px; }
+        .event-card img.crop-top { object-position: top; }
   .event-ph {
     aspect-ratio: 4 / 3;
     border: 1px solid var(--hairline);
@@ -959,7 +960,7 @@
   .faq-answer[hidden] { display: none; }
   .faq-item p { font-size: 0.95rem; margin: 0; max-width: 42rem; }
 
-  /* PRODUCED FOR — CLIENT LOGOS */
+  /* PRODUCED FOR â CLIENT LOGOS */
   .logos-section {
     padding: 3.5rem 0 3.75rem;
     background: var(--cream);
@@ -1145,7 +1146,7 @@
         "addressRegion": "NY",
         "addressCountry": "US"
       },
-      "areaServed": { "@type": "City", "name": "Brooklyn" },
+      "areaServed": { "@type": "City", "name": "New York City Tri-State Area" },
       "knowsAbout": [ "Wedding planning", "Corporate event planning" ],
       "sameAs": [ "https://www.instagram.com/effortlesslycoordinated/" ]
     },
@@ -1155,8 +1156,8 @@
       "mainEntity": [
         { "@type": "Question", "name": "Who is Toni Bullock?", "acceptedAnswer": { "@type": "Answer", "text": "Toni Bullock is a National Emmy Award-winning television producer whose credits include Black Women Own the Conversation (OWN), Red Table Talk, Peace of Mind with Taraji, The Amazing Race, Rhythm and Flow, and Sherri. She is also the founder of Callsheets 2 Cocktails and Effortlessly Coordinated." } },
         { "@type": "Question", "name": "What is Callsheets 2 Cocktails?", "acceptedAnswer": { "@type": "Answer", "text": "Callsheets 2 Cocktails (C2C) is a professional community Toni Bullock founded in 2017 to connect, educate, and empower women in media through curated panels, an international retreat in Bali, workout sessions, networking events across New York, Los Angeles, and Atlanta, and educational brunches." } },
-        { "@type": "Question", "name": "What is Effortlessly Coordinated?", "acceptedAnswer": { "@type": "Answer", "text": "Effortlessly Coordinated is Toni Bullock's Brooklyn, NY-based event coordination team, specializing in weddings, private events, and corporate experiences." } },
-        { "@type": "Question", "name": "Can Effortlessly Coordinated plan my Brooklyn wedding?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. Effortlessly Coordinated is based in Brooklyn, NY and plans weddings there, along with private events and corporate experiences." } }
+        { "@type": "Question", "name": "What is Effortlessly Coordinated?", "acceptedAnswer": { "@type": "Answer", "text": "Effortlessly Coordinated is Toni Bullock's Brooklyn, NY-based event coordination team, serving the NYC Tri-State area and specializing in weddings, private events, and corporate experiences." } },
+        { "@type": "Question", "name": "Can Effortlessly Coordinated plan my Brooklyn wedding?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. Effortlessly Coordinated is based in Brooklyn, NY and plans weddings there, as well as throughout the NYC Tri-State area, along with private events and corporate experiences." } }
       ]
     }
   ]
@@ -1173,7 +1174,6 @@
       <li><a href="#timeline">Career</a></li>
       <li><a href="#media">Media</a></li>
       <li><a href="#ventures">Ventures</a></li>
-      <li class="nav-phone"><a href="tel:+17184906728">(718) 490-6728</a></li>
       <li><a href="#contact" class="btn-solid">Contact</a></li>
     </ul>
     <button class="menu-toggle" id="menu-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="nav-links">
@@ -1206,8 +1206,8 @@
           </div>
           <div class="proof-divider"></div>
           <div class="proof-stat">
-            <span class="proof-num">55</span>
-            <span class="proof-label">Episodes of Sherri</span>
+            <span class="proof-num">Senior Producer</span>
+            <span class="proof-label">Sherri</span>
           </div>
           <div class="proof-divider"></div>
           <div class="proof-stat">
@@ -1321,8 +1321,8 @@
  <div class="event-grid">
  <div class="event-card">
  <figure>
- <img src="images/event-reception.jpg" alt="Guests dressed for a celebration at a wedding reception" decoding="async">
- <figcaption>Receptions<span class="event-sub">Guests, toasts, and the party</span></figcaption>
+ <img src="images/event-reception-v2.jpg" alt="Guests dressed for a celebration at a wedding reception" decoding="async" class="crop-top">
+ <figcaption>Receptions<span class="event-sub">Guests, toasts, and the party</span><span class="event-sub">As featured in Vogue Weddings</span></figcaption>
  </figure>
  </div>
  <div class="event-card">
@@ -1580,7 +1580,7 @@
           <div class="path">
             <div class="num">03</div>
             <h3>Book the team</h3>
-            <p>Effortlessly Coordinated: weddings, private events, and corporate experiences in Brooklyn.</p>
+            <p>Effortlessly Coordinated: weddings, private events, and corporate experiences in Brooklyn and across the NYC Tri-State area.</p>
             <a href="#contact" class="path-link">Book the team <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg></a>
           </div>
         </div>
@@ -1629,7 +1629,7 @@
           </button>
         </h3>
         <div class="faq-answer" id="faq-a3" role="region" aria-labelledby="faq-q3" hidden>
-          <p>Effortlessly Coordinated is Toni Bullock&rsquo;s Brooklyn, NY&ndash;based event coordination team, specializing in weddings, private events, and corporate experiences.</p>
+          <p>Effortlessly Coordinated is Toni Bullock&rsquo;s Brooklyn, NY&ndash;based event coordination team, serving the NYC Tri-State area and specializing in weddings, private events, and corporate experiences.</p>
         </div>
       </div>
       <div class="faq-item">
@@ -1640,7 +1640,7 @@
           </button>
         </h3>
         <div class="faq-answer" id="faq-a4" role="region" aria-labelledby="faq-q4" hidden>
-          <p>Yes. Effortlessly Coordinated is based in Brooklyn, NY and plans weddings there, along with private events and corporate experiences.</p>
+          <p>Yes. Effortlessly Coordinated is based in Brooklyn, NY and plans weddings there, as well as throughout the NYC Tri-State area, along with private events and corporate experiences.</p>
         </div>
       </div>
     </div>
@@ -1674,8 +1674,7 @@
       <div class="contact-card">
         <div class="contact-card-head">
           <h3>Toni Bullock</h3>
-          <p class="contact-phone"><a href="tel:+17184906728">+1 (718) 490-6728</a></p>
-        </div>
+          </div>
 
         <form id="contact-form" class="contact-form" novalidate>
         <!-- Honeypot: hidden from real users; bots that fill it are silently dropped -->
@@ -1782,7 +1781,7 @@
     });
   });
 
-  // Contact form: validate, then send via EmailJS. No server POST — JS handles delivery.
+  // Contact form: validate, then send via EmailJS. No server POST â JS handles delivery.
   // Destination inbox + subject are configured on the EmailJS template, not in this code.
   emailjs.init('nQg6lBZvRk59LIYWp');
   const EMAILJS_SERVICE = 'service_cv0d9ya';
@@ -1798,7 +1797,7 @@
       formConfirm.classList.remove('show');
       formError.classList.remove('show');
 
-      // Honeypot: a filled hidden field means a bot — show success, send nothing.
+      // Honeypot: a filled hidden field means a bot â show success, send nothing.
       const honeypot = document.getElementById('f-company');
       if (honeypot && honeypot.value.trim() !== '') {
         contactForm.reset();
@@ -1836,7 +1835,7 @@
         return;
       }
 
-      // Template params — must match the EmailJS template's {{name}} {{email}} {{message}}.
+      // Template params â must match the EmailJS template's {{name}} {{email}} {{message}}.
       // `reason` is sent as an extra param (harmless if the template doesn't use it).
       const params = {
         name: document.getElementById('f-name').value.trim(),
@@ -1885,7 +1884,7 @@
     secToLink.forEach((_link, sec) => observer.observe(sec));
   })();
 
-  // Media section: tab filtering — show/hide cards by data-category (vanilla, no framework)
+  // Media section: tab filtering â show/hide cards by data-category (vanilla, no framework)
   (function () {
     const tabs = document.querySelectorAll('#media .media-tab');
     const cards = document.querySelectorAll('#media .media-card');
