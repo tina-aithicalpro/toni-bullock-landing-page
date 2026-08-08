@@ -1755,7 +1755,6 @@
   </nav>
 </footer>
 
-<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <script>
   // Mobile menu toggle
   const menuToggle = document.getElementById('menu-toggle');
@@ -1789,12 +1788,7 @@
     });
   });
 
-  // Contact form: validate, then send via EmailJS. No server POST — JS handles delivery.
-  // Destination inbox + subject are configured on the EmailJS template, not in this code.
-  emailjs.init('nQg6lBZvRk59LIYWp');
-  const EMAILJS_SERVICE = 'service_cv0d9ya';
-  const EMAILJS_TEMPLATE = 'template_2nz61zp';
-  const GHL_WEBHOOK_URL = 'https://services.leadconnectorhq.com/hooks/BIYAuzDQSzo2eAudvlab/webhook-trigger/888b3ef1-e630-4ec6-bf8f-152dbb2ff3c2';
+      // Contact form: validate, then POST directly to the GHL inbound webhook.
   const contactForm = document.getElementById('contact-form');
   const formConfirm = document.getElementById('form-confirm');
   const formError = document.getElementById('form-error');
@@ -1844,8 +1838,8 @@
         return;
       }
 
-      // Template params — must match the EmailJS template's {{name}} {{email}} {{message}}.
-      // `reason` is sent as an extra param (harmless if the template doesn't use it).
+      // Payload sent to the GHL webhook - keys arrive as contact.name, contact.email, contact.message, etc.
+      // `reason` maps to the category/interest field in GHL.
       const params = {
         name: document.getElementById('f-name').value.trim(),
         email: emailEl.value.trim(),
@@ -1853,26 +1847,18 @@
         reason: document.getElementById('f-reason').value,
       };
 
-      // Task 11: GHL webhook — parallel, non-blocking send. Must never block EmailJS or the confirmation UI.
+      // Send the lead to the GHL webhook - this is now the only delivery path for the contact form.
       try {
-        fetch(GHL_WEBHOOK_URL, {
+        const res = await fetch(GHL_WEBHOOK_URL, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(params)
-        }).catch(err => console.error('GHL webhook send failed:', err));
-      } catch (err) {
-        console.error('GHL webhook send failed:', err);
-      }
-
-      const originalLabel = submitBtn ? submitBtn.textContent : '';
-      if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = 'Sending...'; }
-
-      try {
-        await emailjs.send(EMAILJS_SERVICE, EMAILJS_TEMPLATE, params);
+        });
+        if (!res.ok) throw new Error('Webhook responded with status ' + res.status);
         contactForm.reset();
         formConfirm.classList.add('show');
       } catch (err) {
-        console.error('Contact form (EmailJS) send failed:', err);
+        console.error('Contact form (GHL webhook) send failed:', err);
         formError.classList.add('show');
       } finally {
         if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = originalLabel; }
